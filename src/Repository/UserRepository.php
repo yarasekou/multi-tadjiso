@@ -24,9 +24,10 @@ class UserRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('u')
             ->join('u.userRoles', 'r')
             ->where('r.name = :role')
+            ->andWhere('u.structure IS NULL')
             ->andWhere('u.level IN (:levels)')
             ->setParameter('levels', [1, 2])
-            ->setParameter('role', 'SUPER ADMIN')
+            ->setParameter('role', 'SUPER_ADMIN')
             ->orderBy('u.level', 'ASC');
 
         return $qb->getQuery()->getResult();
@@ -37,7 +38,7 @@ class UserRepository extends ServiceEntityRepository
     public function findAdminsWithAdminRoleAndStructure(): array
     {
         return $this->createQueryBuilder('u')
-            ->innerJoin('u.userRoles', 'r')
+            ->join('u.userRoles', 'r')
             ->andWhere('u.level = :level')
             ->andWhere('r.name = :role')
             ->andWhere('u.structure IS NOT NULL')
