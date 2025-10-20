@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de {{ structure.name }}{% endblock %}
+
+{% block page_title %}Détails de la Structure{% endblock %}
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{{ path('structure_index') }}">Structures</a></li>
+    <li class="breadcrumb-item active">{{ structure.name }}</li>
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h3 class="card-title mb-0">
+                            <i class="fas fa-building me-2"></i>
+                            {{ structure.name }}
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <!-- Contenu des détails de la structure -->
+                        <div class="row">
+                            <h5>Informations</h5>
+                            <p><strong>Nom :</strong> {{ structure.name }}</p>
+                            <p><strong>Téléphone :</strong> {{ structure.phone }}</p>
+                            <p><strong>Email :</strong> {{ structure.email ?? 'Non renseigné' }}</p>
+                            <p><strong>Site web :</strong> {{ structure.website ?? 'Non renseigné' }}</p>
+                        </div>
+                        <!-- Actions -->
+                        <div class="mt-4">
+                            <a href="{{ path('structure_edit', {'id': structure.id}) }}" class="btn btn-primary">
+                                <i class="fas fa-edit me-2"></i>Modifier
+                            </a>
+                            <a href="{{ path('structure_index') }}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Retour à la liste
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
