@@ -3,16 +3,16 @@
 namespace App\Form;
 
 use App\Entity\Structure;
-use App\Entity\User;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\Image;
 
 class StructureType extends AbstractType
 {
@@ -49,12 +49,17 @@ class StructureType extends AbstractType
                     'placeholder' => 'https://www.example.com'
                 ]
             ])
-            ->add('logo', TextType::class, [
-                'label' => 'Logo (URL)',
+            ->add('logoFile', FileType::class, [
+                'label' => 'Logo',
                 'required' => false,
-                'attr' => [
-                    'class' => 'form-control',
-                    'placeholder' => 'https://example.com/logo.png'
+                'mapped' => false, // Important : ne pas mapper directement
+                'attr' => ['class' => 'form-control', 'accept' => 'image/*'],
+                'constraints' => [
+                    new Image([
+                        'maxSize' => '5M',
+                        'mimeTypes' => ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/jpg'],
+                        'mimeTypesMessage' => 'Veuillez uploader une image valide',
+                    ])
                 ]
             ])
             ->add('address', TextType::class, [
@@ -64,8 +69,15 @@ class StructureType extends AbstractType
                     'placeholder' => 'Adresse complète'
                 ]
             ])
-
-            ->add('description', TextareaType::class, [])
+            ->add('description', TextareaType::class, [
+                'label' => 'Description',
+                'required' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'rows' => 4,
+                    'placeholder' => 'Description de la structure...'
+                ]
+            ])
         ;
     }
 

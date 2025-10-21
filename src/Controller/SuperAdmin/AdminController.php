@@ -4,8 +4,7 @@ namespace App\Controller\SuperAdmin;
 
 use App\Entity\User;
 use App\Form\AdminType;
-use App\Form\SuperAdminType;
-use App\Repository\UserRepository;
+use App\Repository\SuperAdmin\UserRepository;
 use App\Repository\UserRoleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/super-admin/admins', name: 'super-admin.admins')]
 class AdminController extends AbstractController
 {
-    #[Route('', name: '', methods: ['GET'])] // Correction: ajout de '.index'
+    #[Route('', name: '', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {
         $admins = $userRepository->findAdminsWithAdminRoleAndStructure();
@@ -33,7 +32,8 @@ class AdminController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
         UserPasswordHasherInterface $passwordHasher,
-        UserRoleRepository $userRoleRepository
+        UserRoleRepository $userRoleRepository,
+        UserRepository $userRepository
     ): Response
     {
         $user = new User();
@@ -44,6 +44,20 @@ class AdminController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
+                // Vérifier si la structure a déjà un admin
+                $structure = $user->getStructure();
+                if ($structure && $userRepository->structureHasAdmin($structure->getId())) {
+                    $existingAdmin = $userRepository->findAdminByStructure($structure->getId());
+                    $this->addFlash('error', sprintf(
+                        'La structure "%s" a déjà un administrateur : %s %s (%s)',
+                        $structure->getName(),
+                        $existingAdmin->getFirstname(),
+                        $existingAdmin->getLastname(),
+                        $existingAdmin->getEmail()
+                    ));
+                    return $this->redirectToRoute('super-admin.admins.new');
+                }
+
                 // Hasher le mot de passe
                 $plainPassword = $form->get('password')->getData();
                 if ($plainPassword) {
@@ -52,13 +66,19 @@ class AdminController extends AbstractController
                 }
 
                 // Définir comme admin et activé
-                $user->setLevel(3)
-                ->setEnable(true)
+                $user->setEnable(true)
                     ->setCreatedAt(new \DateTimeImmutable());
 
                 // Ajouter le rôle ROLE_ADMIN automatiquement
                 $adminRole = $userRoleRepository->findOneBy(['name' => 'ADMIN']);
                 if ($adminRole) {
+                    $user->addUserRole($adminRole);
+                } else {
+                    // Créer le rôle ADMIN s'il n'existe pas
+                    $adminRole = new \App\Entity\UserRole();
+                    $adminRole->setName('ADMIN')
+                        ->setDescription('Role des administrateurs');
+                    $entityManager->persist($adminRole);
                     $user->addUserRole($adminRole);
                 }
 
@@ -77,32 +97,17 @@ class AdminController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-
-    #[Route('/{id}', name: '.show', methods: ['GET'])]
-    public function show(User $user = null): Response // Ajout de = null pour éviter l'erreur
-    {
-        if (!$user) {
-            $this->addFlash('error', 'Administrateur non trouvé');
-            return $this->redirectToRoute('super-admin.admins.index');
-        }
-
-        return $this->render('super-admin/admins/show.html.twig', [
-            'user' => $user,
-        ]);
-    }
-
     #[Route('/{id}/edit', name: '.edit', methods: ['GET', 'POST'])]
     public function edit(
         Request $request,
-        User $user = null, // Ajout de = null
+        User $user,
         EntityManagerInterface $entityManager,
-        UserPasswordHasherInterface $passwordHasher
+        UserPasswordHasherInterface $passwordHasher,
+        UserRepository $userRepository
     ): Response
     {
-        if (!$user) {
-            $this->addFlash('error', 'Administrateur non trouvé');
-            return $this->redirectToRoute('super-admin.admins');
-        }
+        // Sauvegarder la structure actuelle avant le traitement du formulaire
+        $currentStructure = $user->getStructure();
 
         $form = $this->createForm(AdminType::class, $user, [
             'is_creation' => false
@@ -111,6 +116,26 @@ class AdminController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
+                $newStructure = $user->getStructure();
+
+                // Vérifier si la structure change et si la nouvelle structure a déjà un admin
+                if ($newStructure && $newStructure !== $currentStructure) {
+                    if ($userRepository->structureHasAdmin($newStructure->getId())) {
+                        $existingAdmin = $userRepository->findAdminByStructure($newStructure->getId());
+
+                        // Si c'est un admin différent, empêcher la modification
+                        if ($existingAdmin && $existingAdmin->getId() !== $user->getId()) {
+                            $this->addFlash('error', sprintf(
+                                'La structure "%s" a déjà un administrateur',
+                                $newStructure->getName()
+                            ));
+                            // Réassigner l'ancienne structure
+                            $user->setStructure($currentStructure);
+                            return $this->redirectToRoute('super-admin.admins.edit', ['id' => $user->getId()]);
+                        }
+                    }
+                }
+
                 // Gérer le mot de passe si fourni
                 $plainPassword = $form->get('password')->getData();
                 if ($plainPassword) {
@@ -135,23 +160,31 @@ class AdminController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}', name: '.show', methods: ['GET'])]
+    public function show(User $user): Response // Retirer = null, Symfony gère automatiquement
+    {
+        return $this->render('super-admin/admins/show.html.twig', [
+            'user' => $user,
+        ]);
+    }
+
     #[Route('/{id}', name: '.delete', methods: ['POST'])]
     public function delete(
         Request $request,
-        User $user = null, // Ajout de = null
+        User $user,
         EntityManagerInterface $entityManager
     ): Response
     {
-        if (!$user) {
-            $this->addFlash('error', 'Administrateur non trouvé');
-            return $this->redirectToRoute('super-admin.admins.index');
-        }
-
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($user);
-            $entityManager->flush();
-
-            $this->addFlash('success', 'Administrateur supprimé avec succès');
+            try {
+                $entityManager->remove($user);
+                $entityManager->flush();
+                $this->addFlash('success', 'Administrateur supprimé avec succès');
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Erreur lors de la suppression: ' . $e->getMessage());
+            }
+        } else {
+            $this->addFlash('error', 'Token CSRF invalide');
         }
 
         return $this->redirectToRoute('super-admin.admins');

@@ -4,7 +4,7 @@ namespace App\Controller\SuperAdmin;
 
 use App\Entity\Structure;
 use App\Form\StructureType;
-use App\Repository\StructureRepository;
+use App\Repository\SuperAdmin\StructureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

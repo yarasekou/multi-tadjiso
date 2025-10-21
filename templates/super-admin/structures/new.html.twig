@@ -7,7 +7,7 @@
 
     <div class="card mt-4">
         <div class="card-body">
-            {{ form_start(form, {'attr': {'class': 'row g-3'}}) }}
+            {{ form_start(form, {'attr': {'class': 'row g-3', 'enctype': 'multipart/form-data'}}) }}
 
             <div class="col-md-6">
                 {{ form_label(form.name, 'Nom de la structure', {'label_attr': {'class': 'form-label'}}) }}
@@ -40,9 +40,10 @@
             </div>
 
             <div class="col-md-6">
-                {{ form_label(form.logo, 'Logo (URL)', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.logo, {'attr': {'class': 'form-control'}}) }}
-                {{ form_errors(form.logo) }}
+                {{ form_label(form.logoFile, 'Logo (Image)', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.logoFile, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.logoFile) }}
+                <div class="form-text">Formats acceptés: JPG, PNG, GIF, WebP (max. 2Mo)</div>
             </div>
 
             <div class="col-12">

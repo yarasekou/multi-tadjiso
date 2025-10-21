@@ -1,10 +1,10 @@
-{% extends 'base.html.twig' %}
+{% extends 'super-admin.base.html.twig' %}
 
 {% block title %}Détails de {{ structure.name }}{% endblock %}
 
 {% block page_title %}Détails de la Structure{% endblock %}
 {% block breadcrumb %}
-    <li class="breadcrumb-item"><a href="{{ path('structure_index') }}">Structures</a></li>
+    <li class="breadcrumb-item"><a href="{{ path('super-admin.structures') }}">Structures</a></li>
     <li class="breadcrumb-item active">{{ structure.name }}</li>
 {% endblock %}
 
@@ -22,20 +22,108 @@
                     <div class="card-body">
                         <!-- Contenu des détails de la structure -->
                         <div class="row">
-                            <h5>Informations</h5>
-                            <p><strong>Nom :</strong> {{ structure.name }}</p>
-                            <p><strong>Téléphone :</strong> {{ structure.phone }}</p>
-                            <p><strong>Email :</strong> {{ structure.email ?? 'Non renseigné' }}</p>
-                            <p><strong>Site web :</strong> {{ structure.website ?? 'Non renseigné' }}</p>
+                            <div class="col-md-6">
+                                <h5>Informations</h5>
+                                <p><strong>Nom :</strong> {{ structure.name }}</p>
+                                <p><strong>Téléphone :</strong> {{ structure.phone }}</p>
+                                <p><strong>Email :</strong> {{ structure.email ?? 'Non renseigné' }}</p>
+                                <p><strong>Site web :</strong>
+                                    {% if structure.website %}
+                                        <a href="{{ structure.website }}" target="_blank">{{ structure.website }}</a>
+                                    {% else %}
+                                        Non renseigné
+                                    {% endif %}
+                                </p>
+                                <p><strong>Adresse :</strong> {{ structure.address ?? 'Non renseignée' }}</p>
+                                <p><strong>Description :</strong> {{ structure.description ?? 'Aucune description' }}</p>
+                                <p><strong>Date de création :</strong> {{ structure.createdAt|date('d/m/Y H:i') }}</p>
+                                {% if structure.updatedAt %}
+                                    <p><strong>Dernière modification :</strong> {{ structure.updatedAt|date('d/m/Y H:i') }}</p>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Logo</h5>
+                                {% if structure.logo %}
+                                    <div class="text-center">
+                                        <img src="{{ asset('uploads/logos/' ~ structure.logo) }}"
+                                             alt="Logo {{ structure.name }}"
+                                             class="img-fluid rounded shadow-sm"
+                                             style="max-height: 200px; max-width: 100%;">
+                                        <p class="text-muted mt-2">Logo de la structure</p>
+                                    </div>
+                                {% else %}
+                                    <div class="text-center text-muted py-4">
+                                        <i class="fas fa-image fa-3x mb-3"></i>
+                                        <p>Aucun logo</p>
+                                    </div>
+                                {% endif %}
+                            </div>
                         </div>
+
+                        <!-- Informations supplémentaires -->
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header bg-light">
+                                        <h6 class="card-title mb-0">
+                                            <i class="fas fa-users me-2"></i>
+                                            Utilisateurs associés
+                                        </h6>
+                                    </div>
+                                    <div class="card-body">
+                                        {% if structure.users|length > 0 %}
+                                            <div class="table-responsive">
+                                                <table class="table table-sm table-hover">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Nom</th>
+                                                        <th>Email</th>
+                                                        <th>Téléphone</th>
+                                                        <th>Statut</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for user in structure.users %}
+                                                        <tr>
+                                                            <td>{{ user.firstname }} {{ user.lastname }}</td>
+                                                            <td>{{ user.email }}</td>
+                                                            <td>{{ user.phone ?? 'Non renseigné' }}</td>
+                                                            <td>
+                                                                {% if user.enable %}
+                                                                    <span class="badge bg-success">Activé</span>
+                                                                {% else %}
+                                                                    <span class="badge bg-danger">Désactivé</span>
+                                                                {% endif %}
+                                                            </td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        {% else %}
+                                            <p class="text-muted">Aucun utilisateur associé à cette structure.</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Actions -->
                         <div class="mt-4">
-                            <a href="{{ path('structure_edit', {'id': structure.id}) }}" class="btn btn-primary">
+                            <a href="{{ path('super-admin.structures.edit', {'id': structure.id}) }}" class="btn btn-primary">
                                 <i class="fas fa-edit me-2"></i>Modifier
                             </a>
-                            <a href="{{ path('structure_index') }}" class="btn btn-secondary">
+                            <a href="{{ path('super-admin.structures') }}" class="btn btn-secondary">
                                 <i class="fas fa-arrow-left me-2"></i>Retour à la liste
                             </a>
+
+                            <!-- Bouton de suppression avec confirmation -->
+                            <form method="post" action="{{ path('super-admin.structures.delete', {'id': structure.id}) }}" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette structure ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ structure.id) }}">
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fas fa-trash me-2"></i>Supprimer
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

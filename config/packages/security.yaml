@@ -1,7 +1,5 @@
 security:
-    # Supprimer enable_authenticator_manager - c'est activé par défaut maintenant
     password_hashers:
-        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
         App\Entity\User:
             algorithm: auto
 

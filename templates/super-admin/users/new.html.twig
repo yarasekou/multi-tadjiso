@@ -1,4 +1,4 @@
-{% extends '../../super-admin.base.html.twig' %}
+{% extends 'super-admin.base.html.twig' %}
 
 {% block title %}Nouvel Utilisateur{% endblock %}
 
@@ -43,6 +43,12 @@
                 {{ form_label(form.password, 'Mot de passe', {'label_attr': {'class': 'form-label'}}) }}
                 {{ form_widget(form.password, {'attr': {'class': 'form-control'}}) }}
                 {{ form_errors(form.password) }}
+            </div>
+
+            <div class="col-12">
+                {{ form_label(form.level, 'Niveau', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.level, {'attr': {'class': 'form-select'}}) }}
+                {{ form_errors(form.level) }}
             </div>
 
             <div class="col-12">

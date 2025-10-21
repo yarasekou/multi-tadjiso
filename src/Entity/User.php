@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
+use App\Repository\SuperAdmin\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -168,18 +168,16 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
         if (!$this->userRoles->contains($userRole)) {
             $this->userRoles->add($userRole);
         }
-
         return $this;
     }
 
     public function removeUserRole(UserRole $userRole): static
     {
         $this->userRoles->removeElement($userRole);
-
         return $this;
     }
 
-    // Méthode utilitaire pour vérifier si l'utilisateur a un rôle spécifique
+    // Méthode utilitaire pour vérifier un rôle
     public function hasUserRole(string $roleName): bool
     {
         foreach ($this->userRoles as $userRole) {
@@ -190,16 +188,14 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
         return false;
     }
 
-    // Méthodes requises par UserInterface
+    // Méthode requise par UserInterface
     public function getRoles(): array
     {
         $roles = [];
         foreach ($this->userRoles as $role) {
-            // Utiliser directement le nom du rôle (qui devrait déjà contenir ROLE_)
             $roles[] = 'ROLE_'.$role->getName();
         }
 
-        // Garantit que chaque utilisateur a au moins ROLE_USER
         if (empty($roles)) {
             $roles[] = 'ROLE_USER';
         }

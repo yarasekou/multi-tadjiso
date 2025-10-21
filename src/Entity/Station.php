@@ -39,6 +39,9 @@ class Station
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
+    #[ORM\ManyToOne(inversedBy: 'stations')]
+    private ?Structure $structure = null;
+
     public function __construct()
     {
         $this->typeCarburants = new ArrayCollection();
@@ -144,6 +147,18 @@ class Station
     public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getStructure(): ?Structure
+    {
+        return $this->structure;
+    }
+
+    public function setStructure(?Structure $structure): static
+    {
+        $this->structure = $structure;
 
         return $this;
     }
