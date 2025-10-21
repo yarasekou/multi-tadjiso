@@ -26,9 +26,8 @@ security:
                 path: app_logout
                 target: app_login
 
-#    access_control:
-#        - { path: ^/super-admin, roles: ROLE_SUPER_ADMIN }
-#        - { path: ^/admin, roles: ROLE_ADMIN }
-#        - { path: ^/login, roles: PUBLIC_ACCESS }
-#        - { path: ^/register, roles: PUBLIC_ACCESS }
-#        - { path: ^/$, roles: PUBLIC_ACCESS }
+    access_control:
+        - { path: ^/super-admin, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/$, roles: PUBLIC_ACCESS }

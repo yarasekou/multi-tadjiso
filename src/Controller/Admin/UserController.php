@@ -12,8 +12,7 @@ class UserController extends AbstractController
     #[Route('', name: '', methods: ['GET'])]
     public function index(): Response
     {
-
-        return $this->render('admin/users/index.html.twig', [
+        return $this->render('admin/users/show.html.twig', [
             'controller_name' => 'Admin/UserController',
         ]);
     }
