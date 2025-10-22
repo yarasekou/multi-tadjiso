@@ -1,0 +1,197 @@
+{% extends 'admin.base.html.twig' %}
+
+{% block title %}Gestion des Utilisateurs{% endblock %}
+
+{% block page_title %}Gestion des Utilisateurs{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('app_admin_dashboard') }}">Dashboard</a>
+    </li>
+    <li class="breadcrumb-item active">Utilisateurs</li>
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <!-- En-tête -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="h3 mb-0 text-uppercase">Gestion des Utilisateurs</h1>
+                <p class="text-muted mb-0">Structure : <strong>{{ structure.name }}</strong></p>
+            </div>
+            <a href="{{ path('admin.users.new') }}" class="btn btn-success">
+                <i class="fas fa-plus me-1"></i> Nouvel utilisateur
+            </a>
+        </div>
+
+        <!-- Messages flash -->
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-2"></i>
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+
+        <!-- Carte principale -->
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-users me-2"></i>
+                    Liste des Utilisateurs de la Structure
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if users|length > 0 %}
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Nom complet</th>
+                                <th>Email</th>
+                                <th>Téléphone</th>
+                                <th>Niveau</th>
+                                <th>Statut</th>
+                                <th>Créé le</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for user in users %}
+                                <tr>
+                                    <td class="fw-bold">#{{ user.id }}</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar-circle-sm bg-primary text-white me-3">
+                                                {{ user.firstname|first|upper }}{{ user.lastname|first|upper }}
+                                            </div>
+                                            <div>
+                                                <strong>{{ user.firstname }} {{ user.lastname }}</strong>
+                                                {% if user.id == app.user.id %}
+                                                    <span class="badge bg-info ms-1">Vous</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a href="mailto:{{ user.email }}" class="text-decoration-none">
+                                            <i class="fas fa-envelope me-1 text-muted"></i>
+                                            {{ user.email }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        {% if user.phone %}
+                                            <i class="fas fa-phone me-1 text-muted"></i>
+                                            {{ user.phone }}
+                                        {% else %}
+                                            <span class="text-muted">Non renseigné</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-secondary">Niveau {{ user.level }}</span>
+                                    </td>
+                                    <td>
+                                        {% if user.enable %}
+                                            <span class="badge bg-success">
+                                                <i class="fas fa-check me-1"></i>Actif
+                                            </span>
+                                        {% else %}
+                                            <span class="badge bg-danger">
+                                                <i class="fas fa-times me-1"></i>Inactif
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <small class="text-muted">
+                                            {{ user.createdAt|date('d/m/Y') }}
+                                        </small>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="{{ path('admin.users.edit', {'id': user.id}) }}"
+                                               class="btn btn-outline-primary"
+                                               title="Modifier">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+
+                                            {% if user.id != app.user.id %}
+                                                <form method="post"
+                                                      action="{{ path('admin.users.toggle', {'id': user.id}) }}"
+                                                      class="d-inline">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token('toggle' ~ user.id) }}">
+                                                    <button type="submit"
+                                                            class="btn btn-outline-{{ user.enable ? 'warning' : 'success' }}"
+                                                            title="{{ user.enable ? 'Désactiver' : 'Activer' }}">
+                                                        <i class="fas fa-{{ user.enable ? 'pause' : 'play' }}"></i>
+                                                    </button>
+                                                </form>
+
+                                                <form method="post"
+                                                      action="{{ path('admin.users.delete', {'id': user.id}) }}"
+                                                      onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');"
+                                                      class="d-inline">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                                                    <button type="submit" class="btn btn-outline-danger" title="Supprimer">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            {% else %}
+                                                <span class="btn btn-outline-secondary disabled" title="Action non disponible">
+                                                    <i class="fas fa-lock"></i>
+                                                </span>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                        <h4 class="text-muted">Aucun utilisateur trouvé</h4>
+                        <p class="text-muted">Commencez par ajouter un nouvel utilisateur à votre structure.</p>
+                        <a href="{{ path('admin.users.new') }}" class="btn btn-primary">
+                            <i class="fas fa-plus me-1"></i> Ajouter le premier utilisateur
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+            {% if users|length > 0 %}
+                <div class="card-footer text-muted">
+                    <small>
+                        <i class="fas fa-info-circle me-1"></i>
+                        {{ users|length }} utilisateur(s) trouvé(s) pour la structure {{ structure.name }}
+                    </small>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <style>
+        .avatar-circle-sm {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        .table th {
+            border-top: none;
+            font-weight: 600;
+        }
+    </style>
+{% endblock %}

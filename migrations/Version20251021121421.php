@@ -23,8 +23,8 @@ final class Version20251021121421 extends AbstractMigration
         $this->addSql('CREATE TABLE type_carburant (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, unit_price INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE type_carburant_station (type_carburant_id INT NOT NULL, station_id INT NOT NULL, INDEX IDX_132324B8B5991721 (type_carburant_id), INDEX IDX_132324B821BDB235 (station_id), PRIMARY KEY(type_carburant_id, station_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE type_carburant_station ADD CONSTRAINT FK_132324B8B5991721 FOREIGN KEY (type_carburant_id) REFERENCES type_carburant (id) ON DELETE CASCADE');
-        $this->addSql('ALTER TABLE type_carburant_station ADD CONSTRAINT FK_132324B821BDB235 FOREIGN KEY (station_id) REFERENCES station (id) ON DELETE CASCADE');
-        $this->addSql('ALTER TABLE station ADD created_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', ADD updated_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\'');
+        $this->addSql('ALTER TABLE type_carburant_station ADD CONSTRAINT FK_132324B821BDB235 FOREIGN KEY (station_id) REFERENCES stations (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE stations ADD created_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', ADD updated_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\'');
         $this->addSql('ALTER TABLE structure CHANGE logo logo VARCHAR(255) DEFAULT NULL');
     }
 
@@ -36,6 +36,6 @@ final class Version20251021121421 extends AbstractMigration
         $this->addSql('DROP TABLE type_carburant');
         $this->addSql('DROP TABLE type_carburant_station');
         $this->addSql('ALTER TABLE structure CHANGE logo logo LONGTEXT NOT NULL');
-        $this->addSql('ALTER TABLE station DROP created_at, DROP updated_at');
+        $this->addSql('ALTER TABLE stations DROP created_at, DROP updated_at');
     }
 }

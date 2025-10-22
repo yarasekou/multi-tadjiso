@@ -3,24 +3,21 @@
 namespace App\Form;
 
 use App\Entity\Structure;
+use App\Entity\User;
+use App\Entity\UserRole;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class AdminType extends BaseUserType
+class UserType extends BaseUserType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         parent::buildForm($builder, $options);
 
         $builder
-            ->add('structure', EntityType::class, [
-            'class' => Structure::class,
-            'choice_label' => 'name',
-            'label' => 'Structure',
-            'required' => false,
-            'attr' => ['class' => 'form-select']
-        ])
             ->add('level', ChoiceType::class, [
             'label' => 'Niveau',
             'choices' => [

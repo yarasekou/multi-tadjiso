@@ -1,4 +1,5 @@
 <?php
+// src/Repository/StationRepository.php
 
 namespace App\Repository;
 
@@ -16,28 +17,29 @@ class StationRepository extends ServiceEntityRepository
         parent::__construct($registry, Station::class);
     }
 
-//    /**
-//     * @return Station[] Returns an array of Station objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * Trouve toutes les stations d'une structure
+     */
+    public function findByStructure(int $structureId): array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.structure = :structureId')
+            ->setParameter('structureId', $structureId)
+            ->orderBy('s.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 
-//    public function findOneBySomeField($value): ?Station
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    /**
+     * Compte le nombre de stations d'une structure
+     */
+    public function countByStructure(int $structureId): int
+    {
+        return $this->createQueryBuilder('s')
+            ->select('COUNT(s.id)')
+            ->andWhere('s.structure = :structureId')
+            ->setParameter('structureId', $structureId)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

@@ -21,7 +21,7 @@ final class Version20251021133051 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE structure ADD admin_id INT DEFAULT NULL');
-        $this->addSql('ALTER TABLE structure ADD CONSTRAINT FK_6F0137EA642B8210 FOREIGN KEY (admin_id) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE structure ADD CONSTRAINT FK_6F0137EA642B8210 FOREIGN KEY (admin_id) REFERENCES users (id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_6F0137EA642B8210 ON structure (admin_id)');
     }
 

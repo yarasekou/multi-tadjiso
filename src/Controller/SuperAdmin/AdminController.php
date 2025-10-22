@@ -21,7 +21,7 @@ class AdminController extends AbstractController
     {
         $admins = $userRepository->findAdminsWithAdminRoleAndStructure();
 
-        return $this->render('super-admin/admins/index.html.twig', [
+        return $this->render('super-admin/admins/index .html.twig', [
             'users' => $admins,
             'title' => 'Administrateurs avec structure'
         ]);
@@ -156,7 +156,7 @@ class AdminController extends AbstractController
 
         return $this->render('super-admin/admins/edit.html.twig', [
             'form' => $form->createView(),
-            'user' => $user,
+            'users' => $user,
         ]);
     }
 
@@ -164,7 +164,7 @@ class AdminController extends AbstractController
     public function show(User $user): Response // Retirer = null, Symfony gère automatiquement
     {
         return $this->render('super-admin/admins/show.html.twig', [
-            'user' => $user,
+            'users' => $user,
         ]);
     }
 

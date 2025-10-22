@@ -107,7 +107,7 @@ class SuperAdminController extends AbstractController
 
         return $this->render('super-admin/users/edit.html.twig', [
             'form' => $form->createView(),
-            'user' => $user,
+            'users' => $user,
         ]);
     }
     #[Route('/{id}', name: '.delete', methods: ['POST'])]

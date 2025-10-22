@@ -1,4 +1,5 @@
 <?php
+// src/Entity/User.php
 
 namespace App\Entity;
 
@@ -44,7 +45,7 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     /**
      * @var Collection<int, Structure>
      */
-    #[ORM\OneToMany(targetEntity: Structure::class, mappedBy: 'user')]
+    #[ORM\OneToMany(targetEntity: Structure::class, mappedBy: 'user')] // ✅ Correction : 'user' au singulier
     private Collection $structures;
 
     #[ORM\Column]
@@ -64,6 +65,7 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
         $this->userRoles = new ArrayCollection();
         $this->enable = true; // Valeur par défaut
         $this->structures = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -295,5 +297,11 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
         $this->level = $level;
 
         return $this;
+    }
+
+    // Méthode pour afficher le nom dans les formulaires
+    public function __toString(): string
+    {
+        return $this->firstname . ' ' . $this->lastname;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+// src/Entity/Structure.php
 
 namespace App\Entity;
 
@@ -8,7 +9,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
-
 
 #[ORM\Entity(repositoryClass: StructureRepository::class)]
 #[Vich\Uploadable]
@@ -46,9 +46,6 @@ class Structure
     /**
      * @var Collection<int, User>
      */
-    /**
-     * @var Collection<int, User>
-     */
     #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'structure')]
     private Collection $users;
 
@@ -75,6 +72,7 @@ class Structure
     {
         $this->users = new ArrayCollection();
         $this->stations = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -288,5 +286,11 @@ class Structure
         }
 
         return $this;
+    }
+
+    // Méthode pour afficher le nom dans les formulaires
+    public function __toString(): string
+    {
+        return $this->name ?? '';
     }
 }

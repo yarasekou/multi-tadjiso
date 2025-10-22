@@ -30,7 +30,7 @@ class Station
     /**
      * @var Collection<int, TypeCarburant>
      */
-    #[ORM\ManyToMany(targetEntity: TypeCarburant::class, mappedBy: 'station')]
+    #[ORM\ManyToMany(targetEntity: TypeCarburant::class, mappedBy: 'stations')]
     private Collection $typeCarburants;
 
     #[ORM\Column]

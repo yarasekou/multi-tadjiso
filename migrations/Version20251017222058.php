@@ -20,12 +20,12 @@ final class Version20251017222058 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE user ADD level INT NOT NULL, DROP `admin`');
+        $this->addSql('ALTER TABLE users ADD level INT NOT NULL, DROP `admin`');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE user ADD `admin` TINYINT(1) NOT NULL, DROP level');
+        $this->addSql('ALTER TABLE users ADD `admin` TINYINT(1) NOT NULL, DROP level');
     }
 }
