@@ -34,9 +34,6 @@ class Structure
     #[ORM\Column(length: 255)]
     private ?string $address = null;
 
-    #[ORM\ManyToOne(inversedBy: 'structures')]
-    private ?User $user = null;
-
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
@@ -57,10 +54,6 @@ class Structure
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
-
-    #[ORM\OneToOne(targetEntity: User::class)] // Un seul admin par structure
-    #[ORM\JoinColumn(name: 'admin_id', referencedColumnName: 'id', nullable: true)]
-    private ?User $admin = null;
 
     /**
      * @var Collection<int, Station>
@@ -127,18 +120,6 @@ class Structure
         return $this;
     }
 
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): static
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
@@ -184,7 +165,6 @@ class Structure
     public function removeUser(User $user): static
     {
         if ($this->users->removeElement($user)) {
-            // set the owning side to null (unless already changed)
             if ($user->getStructure() === $this) {
                 $user->setStructure(null);
             }
@@ -229,15 +209,11 @@ class Structure
         return $this;
     }
 
-    /**
-     * Gestion du fichier uploadé
-     */
     public function setLogoFile(?File $logoFile = null): void
     {
         $this->logoFile = $logoFile;
 
         if (null !== $logoFile) {
-            // Forcer la mise à jour si le fichier change
             $this->updatedAt = new \DateTimeImmutable();
         }
     }
@@ -279,7 +255,6 @@ class Structure
     public function removeStation(Station $station): static
     {
         if ($this->stations->removeElement($station)) {
-            // set the owning side to null (unless already changed)
             if ($station->getStructure() === $this) {
                 $station->setStructure(null);
             }
@@ -288,7 +263,6 @@ class Structure
         return $this;
     }
 
-    // Méthode pour afficher le nom dans les formulaires
     public function __toString(): string
     {
         return $this->name ?? '';

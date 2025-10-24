@@ -4,7 +4,9 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Station;
+use App\Entity\TypeCarburant;
 use App\Form\StationType;
+use App\Form\TypeCarburantType;
 use App\Repository\StationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -69,7 +71,7 @@ class StationController extends AbstractController
         }
 
         return $this->render('admin/stations/new.html.twig', [
-            'stations' => $station,
+            'station' => $station,
             'form' => $form->createView(),
             'structure' => $structure,
         ]);
@@ -91,32 +93,42 @@ class StationController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'admin.stations.edit', methods: ['GET', 'POST'])]
-    public function edit(
-        Request $request,
-        Station $station,
-        EntityManagerInterface $entityManager
-    ): Response {
-        // Vérifier que la stations appartient à la même structure
-        $currentUser = $this->getUser();
-        if ($station->getStructure()?->getId() !== $currentUser->getStructure()?->getId()) {
-            $this->addFlash('error', 'Vous n\'avez pas accès à cette stations.');
-            return $this->redirectToRoute('admin.stations');
-        }
-
+    public function edit(Request $request, Station $station, EntityManagerInterface $entityManager): Response
+    {
         $form = $this->createForm(StationType::class, $station);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $station->setUpdatedAt(new \DateTimeImmutable());
+        // Formulaire pour nouveau carburant
+        $newCarburant = new TypeCarburant();
+        $carburantForm = $this->createForm(TypeCarburantType::class, $newCarburant);
+        $carburantForm->handleRequest($request);
+
+        // Traitement du formulaire de carburant
+        if ($carburantForm->isSubmitted() && $carburantForm->isValid()) {
+            $newCarburant->setCreatedAt(new \DateTimeImmutable());
+            $newCarburant->addStation($station);
+            $entityManager->persist($newCarburant);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Station modifiée avec succès.');
-            return $this->redirectToRoute('admin.stations');
+            $this->addFlash('success', 'Type de carburant créé avec succès!');
+            return $this->redirectToRoute('admin.stations.edit', ['id' => $station->getId()]);
         }
 
+        // Traitement du formulaire principal
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Station modifiée avec succès!');
+            return $this->redirectToRoute('admin.stations.show', ['id' => $station->getId()]);
+        }
+
+        $allCarburants = $entityManager->getRepository(TypeCarburant::class)->findAll();
+
         return $this->render('admin/stations/edit.html.twig', [
-            'stations' => $station,
+            'station' => $station,
             'form' => $form->createView(),
+            'carburantForm' => $carburantForm->createView(),
+            'allCarburants' => $allCarburants,
         ]);
     }
 

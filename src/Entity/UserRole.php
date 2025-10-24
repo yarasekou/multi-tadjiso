@@ -1,4 +1,5 @@
 <?php
+// src/Entity/UserRole.php
 
 namespace App\Entity;
 
@@ -48,7 +49,6 @@ class UserRole
         return $this;
     }
 
-    // Méthode pour faciliter l'affichage
     public function __toString(): string
     {
         return $this->name ?? '';

@@ -1,4 +1,5 @@
 <?php
+// src/Entity/Station.php
 
 namespace App\Entity;
 
@@ -30,7 +31,8 @@ class Station
     /**
      * @var Collection<int, TypeCarburant>
      */
-    #[ORM\ManyToMany(targetEntity: TypeCarburant::class, mappedBy: 'stations')]
+    #[ORM\ManyToMany(targetEntity: TypeCarburant::class, inversedBy: 'stations')]
+    #[ORM\JoinTable(name: 'type_carburant_station')]
     private Collection $typeCarburants;
 
     #[ORM\Column]
@@ -108,11 +110,16 @@ class Station
         return $this->typeCarburants;
     }
 
+    public function setTypeCarburants(Collection $typeCarburants): static
+    {
+        $this->typeCarburants = $typeCarburants;
+        return $this;
+    }
+
     public function addTypeCarburant(TypeCarburant $typeCarburant): static
     {
         if (!$this->typeCarburants->contains($typeCarburant)) {
             $this->typeCarburants->add($typeCarburant);
-            $typeCarburant->addStation($this);
         }
 
         return $this;
@@ -120,9 +127,7 @@ class Station
 
     public function removeTypeCarburant(TypeCarburant $typeCarburant): static
     {
-        if ($this->typeCarburants->removeElement($typeCarburant)) {
-            $typeCarburant->removeStation($this);
-        }
+        $this->typeCarburants->removeElement($typeCarburant);
 
         return $this;
     }

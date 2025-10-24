@@ -1,4 +1,5 @@
 <?php
+// src/Entity/TypeCarburant.php
 
 namespace App\Entity;
 
@@ -24,12 +25,21 @@ class TypeCarburant
     /**
      * @var Collection<int, Station>
      */
-    #[ORM\ManyToMany(targetEntity: Station::class, inversedBy: 'typeCarburants')]
-    private Collection $station;
+    #[ORM\ManyToMany(targetEntity: Station::class, mappedBy: 'typeCarburants')]
+    private Collection $stations;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $description = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
 
     public function __construct()
     {
-        $this->station = new ArrayCollection();
+        $this->stations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -64,15 +74,16 @@ class TypeCarburant
     /**
      * @return Collection<int, Station>
      */
-    public function getStation(): Collection
+    public function getStations(): Collection
     {
-        return $this->station;
+        return $this->stations;
     }
 
     public function addStation(Station $station): static
     {
-        if (!$this->station->contains($station)) {
-            $this->station->add($station);
+        if (!$this->stations->contains($station)) {
+            $this->stations->add($station);
+            $station->addTypeCarburant($this);
         }
 
         return $this;
@@ -80,8 +91,51 @@ class TypeCarburant
 
     public function removeStation(Station $station): static
     {
-        $this->station->removeElement($station);
+        if ($this->stations->removeElement($station)) {
+            $station->removeTypeCarburant($this);
+        }
 
         return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name ?? '';
     }
 }

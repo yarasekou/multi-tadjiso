@@ -1,0 +1,107 @@
+/* Styles pour les stations */
+.form-check-group {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1rem;
+    background: #f8f9fa;
+    margin-bottom: 1rem;
+}
+
+.form-check {
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+    margin-bottom: 0.5rem;
+}
+
+.form-check:hover {
+    background-color: #e9ecef;
+}
+
+.form-check-input {
+    margin-right: 0.5rem;
+}
+
+.form-check-label {
+    margin-left: 0;
+    font-weight: 500;
+}
+
+/* Animations */
+.station-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.station-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Badges personnalisés */
+.badge-station {
+    font-size: 0.7rem;
+    padding: 0.3em 0.6em;
+}
+
+/* Tableaux stations */
+.table-stations th {
+    border-top: none;
+    font-weight: 600;
+    background-color: #f8f9fa;
+}
+
+/* Cartes carburants */
+.carburant-card {
+    border-left: 4px solid #007bff;
+}
+
+.carburant-card.essence {
+    border-left-color: #dc3545;
+}
+
+.carburant-card.diesel {
+    border-left-color: #28a745;
+}
+
+.carburant-card.super {
+    border-left-color: #ffc107;
+}
+
+/* Avatar circles */
+.avatar-circle-sm {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+}
+
+.avatar-circle-md {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+/* Loading states */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .station-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .station-actions .btn {
+        width: 100%;
+    }
+}

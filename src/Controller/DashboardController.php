@@ -16,7 +16,7 @@ class DashboardController extends AbstractController
         $user = $this->getUser();
 
         return $this->render('layouts/super-admin.dashboard.html.twig', [
-            'users' => $user,
+            'user' => $user,
         ]);
     }
 
@@ -27,7 +27,7 @@ class DashboardController extends AbstractController
         $user = $this->getUser();
 
         return $this->render('layouts/admin.dashboard.html.twig', [
-            'users' => $user,
+            'user' => $user,
         ]);
     }
 

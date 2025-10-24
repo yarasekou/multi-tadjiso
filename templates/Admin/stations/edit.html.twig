@@ -1,0 +1,311 @@
+{% extends 'admin.base.html.twig' %}
+
+{% block title %}Modifier la Station - {{ station.name }}{% endblock %}
+
+{% block page_title %}Modifier la Station{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('admin.dashboard') }}">Dashboard</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="{{ path('admin.stations') }}">Stations</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="{{ path('admin.stations.show', {'id': station.id}) }}">{{ station.name }}</a>
+    </li>
+    <li class="breadcrumb-item active">Modifier</li>
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <!-- En-tête -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="h3 mb-0 text-uppercase">Modifier {{ station.name }}</h1>
+                <p class="text-muted mb-0">Modifiez les informations de la station</p>
+            </div>
+            <div class="btn-group">
+                <a href="{{ path('admin.stations.show', {'id': station.id}) }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-1"></i> Retour
+                </a>
+            </div>
+        </div>
+
+        <!-- Messages flash -->
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-2"></i>
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+
+        <div class="row">
+            <!-- Colonne principale -->
+            <div class="col-md-8">
+                <!-- Formulaire station -->
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-edit me-2"></i>
+                            Informations de la station
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        {{ form_start(form) }}
+
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                {{ form_label(form.name) }}
+                                {{ form_widget(form.name) }}
+                                {{ form_errors(form.name) }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form_label(form.address) }}
+                                {{ form_widget(form.address) }}
+                                {{ form_errors(form.address) }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form_label(form.phone) }}
+                                {{ form_widget(form.phone) }}
+                                {{ form_errors(form.phone) }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                {{ form_label(form.description) }}
+                                {{ form_widget(form.description) }}
+                                {{ form_errors(form.description) }}
+                            </div>
+                        </div>
+
+
+                        <div class="row mt-4">
+                            <div class="col-md-12">
+                                <div class="d-flex gap-2">
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fas fa-save me-1"></i> Enregistrer les modifications
+                                    </button>
+                                    <a href="{{ path('admin.stations.show', {'id': station.id}) }}" class="btn btn-outline-secondary">
+                                        <i class="fas fa-times me-1"></i> Annuler
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+
+                <!-- Formulaire nouveau carburant -->
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-plus-circle me-2"></i>
+                            Ajouter un nouveau type de carburant
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        {{ form_start(carburantForm, {'attr': {'class': 'ajax-form', 'data-refresh': 'true'}}) }}
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form_label(carburantForm.name) }}
+                                {{ form_widget(carburantForm.name) }}
+                                {{ form_errors(carburantForm.name) }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form_label(carburantForm.unitPrice) }}
+                                <div class="input-group">
+                                    {{ form_widget(carburantForm.unitPrice) }}
+                                    <span class="input-group-text">FCFA</span>
+                                </div>
+                                {{ form_errors(carburantForm.unitPrice) }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                {{ form_label(carburantForm.description) }}
+                                {{ form_widget(carburantForm.description) }}
+                                {{ form_errors(carburantForm.description) }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-plus me-1"></i> Créer le carburant
+                                </button>
+                                <small class="text-muted ms-2">
+                                    Le carburant sera disponible pour toutes les stations
+                                </small>
+                            </div>
+                        </div>
+                        {{ form_end(carburantForm) }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar avec informations -->
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Informations
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <small class="text-muted">
+                                <i class="fas fa-calendar me-1"></i>
+                                <strong>Créée le :</strong> {{ station.createdAt|date('d/m/Y H:i') }}
+                            </small>
+                        </div>
+
+                        {% if station.updatedAt %}
+                            <div class="mb-3">
+                                <small class="text-muted">
+                                    <i class="fas fa-edit me-1"></i>
+                                    <strong>Modifiée le :</strong> {{ station.updatedAt|date('d/m/Y H:i') }}
+                                </small>
+                            </div>
+                        {% endif %}
+
+                        <!-- Statistiques carburants -->
+                        <div class="mt-4">
+                            <h6 class="text-primary mb-3">📊 Statistiques</h6>
+                            <div class="row text-center">
+                                <div class="col-6">
+                                    <div class="border rounded p-2 bg-light">
+                                        <h5 class="mb-0 text-primary">{{ allCarburants|length }}</h5>
+                                        <small class="text-muted">Carburants total</small>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="border rounded p-2 bg-light">
+                                        <h5 class="mb-0 text-success">{{ station.typeCarburants|length }}</h5>
+                                        <small class="text-muted">Dans cette station</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 p-3 bg-light rounded">
+                            <h6 class="text-primary">💡 Astuce</h6>
+                            <p class="small mb-0 text-muted">
+                                Créez de nouveaux types de carburant qui seront disponibles pour toutes les stations de votre réseau.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Liste des carburants existants -->
+                <div class="card">
+                    <div class="card-header bg-warning text-dark">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-list me-2"></i>
+                            Carburants disponibles
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        {% if allCarburants is defined and allCarburants|length > 0 %}
+                            <div class="list-group list-group-flush">
+                                {% for carburant in allCarburants %}
+                                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-0">{{ carburant.name }}</h6>
+                                            <small class="text-muted">{{ carburant.unitPrice|number_format(0, ',', ' ') }} FCFA/L</small>
+                                        </div>
+                                        <span class="badge {% if carburant in station.typeCarburants %}bg-success{% else %}bg-secondary{% endif %}">
+                                        {% if carburant in station.typeCarburants %}Activé{% else %}Désactivé{% endif %}
+                                    </span>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="text-center py-3">
+                                <i class="fas fa-gas-pump fa-2x text-muted mb-2"></i>
+                                <p class="text-muted mb-0">Aucun carburant créé</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .form-check-group {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 1rem;
+            background: #f8f9fa;
+        }
+
+        .form-check {
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-check:hover {
+            background-color: #e9ecef;
+        }
+
+        .form-check-input {
+            margin-right: 0.5rem;
+        }
+
+        .form-check-label {
+            margin-left: 0;
+        }
+
+        .list-group-item {
+            border: none;
+            padding: 0.75rem 0;
+        }
+
+        .badge {
+            font-size: 0.7rem;
+        }
+    </style>
+
+    <!-- JavaScript pour rechargement après ajout -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Rechargement après ajout d'un carburant
+            const forms = document.querySelectorAll('.ajax-form');
+            forms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    const formData = new FormData(this);
+
+                    fetch(this.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    }).then(response => {
+                        if (response.redirected) {
+                            window.location.href = response.url;
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+{% endblock %}

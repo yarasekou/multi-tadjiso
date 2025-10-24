@@ -42,18 +42,13 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     #[ORM\ManyToMany(targetEntity: UserRole::class, cascade: ['persist'])]
     private Collection $userRoles;
 
-    /**
-     * @var Collection<int, Structure>
-     */
-    #[ORM\OneToMany(targetEntity: Structure::class, mappedBy: 'user')] // ✅ Correction : 'user' au singulier
-    private Collection $structures;
-
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
+    // ✅ Un User appartient à une Structure
     #[ORM\ManyToOne(inversedBy: 'users')]
     private ?Structure $structure = null;
 
@@ -63,8 +58,7 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     public function __construct()
     {
         $this->userRoles = new ArrayCollection();
-        $this->enable = true; // Valeur par défaut
-        $this->structures = new ArrayCollection();
+        $this->enable = true;
         $this->createdAt = new \DateTimeImmutable();
     }
 
@@ -179,7 +173,6 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
         return $this;
     }
 
-    // Méthode utilitaire pour vérifier un rôle
     public function hasUserRole(string $roleName): bool
     {
         foreach ($this->userRoles as $userRole) {
@@ -190,7 +183,6 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
         return false;
     }
 
-    // Méthode requise par UserInterface
     public function getRoles(): array
     {
         $roles = [];
@@ -215,40 +207,9 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
         return (string) $this->email;
     }
 
-    // Méthode pour compatibilité (optionnelle mais recommandée)
     public function getUsername(): string
     {
         return $this->getUserIdentifier();
-    }
-
-    /**
-     * @return Collection<int, Structure>
-     */
-    public function getStructures(): Collection
-    {
-        return $this->structures;
-    }
-
-    public function addStructure(Structure $structure): static
-    {
-        if (!$this->structures->contains($structure)) {
-            $this->structures->add($structure);
-            $structure->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeStructure(Structure $structure): static
-    {
-        if ($this->structures->removeElement($structure)) {
-            // set the owning side to null (unless already changed)
-            if ($structure->getUser() === $this) {
-                $structure->setUser(null);
-            }
-        }
-
-        return $this;
     }
 
     public function getCreatedAt(): ?\DateTimeImmutable
@@ -299,7 +260,6 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
         return $this;
     }
 
-    // Méthode pour afficher le nom dans les formulaires
     public function __toString(): string
     {
         return $this->firstname . ' ' . $this->lastname;

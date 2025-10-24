@@ -21,7 +21,7 @@ class AdminController extends AbstractController
     {
         $admins = $userRepository->findAdminsWithAdminRoleAndStructure();
 
-        return $this->render('super-admin/admins/index .html.twig', [
+        return $this->render('super-admin/admins/index.html.twig', [
             'users' => $admins,
             'title' => 'Administrateurs avec structure'
         ]);

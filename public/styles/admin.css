@@ -1,0 +1,35 @@
+/* Styles généraux admin */
+.admin-sidebar {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+}
+
+.admin-content {
+    background-color: #f8f9fc;
+}
+
+.card-shadow {
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+}
+
+.breadcrumb-admin {
+    background-color: transparent;
+    padding: 0;
+}
+
+/* Navigation admin */
+.nav-admin .nav-link {
+    color: #fff;
+    padding: 0.75rem 1rem;
+    border-radius: 0.35rem;
+    margin-bottom: 0.25rem;
+}
+
+.nav-admin .nav-link:hover {
+    background-color: rgba(255,255,255,0.1);
+}
+
+.nav-admin .nav-link.active {
+    background-color: rgba(255,255,255,0.2);
+    font-weight: 600;
+}

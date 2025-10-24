@@ -34,7 +34,6 @@
                         <th>Nom</th>
                         <th>Email</th>
                         <th>Téléphone</th>
-                        <th>Responsable</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -50,13 +49,6 @@
                             </td>
                             <td>{{ structure.email }}</td>
                             <td>{{ structure.phone }}</td>
-                            <td>
-                                {% if structure.user %}
-                                    {{ structure.user.firstname }} {{ structure.user.lastname }}
-                                {% else %}
-                                    <span class="text-muted">Aucun</span>
-                                {% endif %}
-                            </td>
                             <td>
                                 <div class="btn-group btn-group-sm">
                                     <a href="{{ path('super-admin.structures.edit', {'id': structure.id}) }}"
