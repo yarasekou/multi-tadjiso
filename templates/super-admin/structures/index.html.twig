@@ -34,6 +34,7 @@
                         <th>Nom</th>
                         <th>Email</th>
                         <th>Téléphone</th>
+                        <th>Propriétaire</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -50,6 +51,30 @@
                             <td>{{ structure.email }}</td>
                             <td>{{ structure.phone }}</td>
                             <td>
+                                {% set level3Users = structure.users|filter(user => user.level == 3) %}
+
+                                {% if level3Users|length > 0 %}
+                                    <div class="d-flex flex-wrap gap-2">
+                                        {% for user in level3Users %}
+                                            <div class="d-flex align-items-center bg-light rounded-pill px-3 py-1">
+                                                <div class="avatar-circle-sm bg-primary text-white me-2">
+                                                    {{ user.firstname|first|upper }}{{ user.lastname|first|upper }}
+                                                </div>
+                                                <span class="small">
+                        {{ user.firstname }} {{ user.lastname }}
+                    </span>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    <span class="text-muted small">
+            <i class="fas fa-user-slash me-1"></i>
+            Aucun responsable
+        </span>
+                                {% endif %}
+                            </td>
+
+                                <td>
                                 <div class="btn-group btn-group-sm">
                                     <a href="{{ path('super-admin.structures.edit', {'id': structure.id}) }}"
                                        class="btn btn-outline-primary btn-sm"

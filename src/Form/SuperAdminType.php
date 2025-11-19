@@ -15,8 +15,8 @@ class SuperAdminType extends BaseUserType
         $builder->add('level', ChoiceType::class, [
             'label' => 'Niveau',
             'choices' => [
-                'Super Admin (1)' => 1,
-                'Admin (2)' => 2,
+                'Super admin (1)' => 1,
+                'admin (2)' => 2,
             ],
             'attr' => ['class' => 'form-select']
         ]);

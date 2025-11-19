@@ -18,15 +18,7 @@ class AdminType extends BaseUserType
             'class' => Structure::class,
             'choice_label' => 'name',
             'label' => 'Structure',
-            'required' => false,
-            'attr' => ['class' => 'form-select']
-        ])
-            ->add('level', ChoiceType::class, [
-            'label' => 'Niveau',
-            'choices' => [
-                'Super Admin (1)' => 3,
-                'Admin (2)' => 4,
-            ],
+            'required' => true,
             'attr' => ['class' => 'form-select']
         ]);
     }

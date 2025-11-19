@@ -1,0 +1,100 @@
+{% extends 'admin-station.base.html.twig' %}
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{{ path('admin.dashboard') }}">Dashboard</a></li>
+    <li class="breadcrumb-item"><a href="{{ path('admin.stations') }}">Stations</a></li>
+    <li class="breadcrumb-item active">Cuves</li>
+{% endblock %}
+{% block body %}
+    <div class="container mt-4">
+        <!-- En-tête -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="h3 mb-0 text-uppercase">Gestion des Stations</h1>
+                <p class="text-muted mb-0">Cuves de la station : <strong>{{ station.name }}</strong></p>
+            </div>
+            <a href="{{ path('admin.station.cuves.new', { id: station.id }) }}" class="btn btn-success">
+                <i class="fas fa-plus-circle"></i> Ajouter une cuve
+            </a>
+        </div>
+        {% for label, messages in app.flashes %}
+            {% for msg in messages %}
+                <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
+                    {{ msg }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        <div class="card shadow-sm">
+            <div class="card-body p-0">
+                <table class="table table-hover table-striped mb-0">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>Code</th>
+                        <th>Capacité</th>
+                        <th>Stock</th>
+                        <th>Carburant</th>
+                        <th width="160" class="text-center">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for cuve in cuves %}
+                        <tr>
+                            <td class="text-uppercase"><strong>{{ cuve.code }}</strong></td>
+                            <td>{{ cuve.capacity }} L</td>
+                            <td>
+                                <span class="badge bg-info">{{ cuve.stock }} L</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-secondary">{{ cuve.typeCarburant.name }}</span>
+                            </td>
+
+                            <td class="text-center">
+                                <a href="{{ path('admin.station.cuves.edit', {id: station.id, cuveId: cuve.id}) }}"
+                                   class="btn btn-warning btn-sm">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+
+                                <form method="post"
+                                      action="{{ path('admin.station.cuves.delete', { id: station.id, cuveId: cuve.id }) }}"
+                                      class="d-inline"
+                                      onsubmit="return confirm('Voulez-vous vraiment supprimer cette cuve ?');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ cuve.id) }}">
+                                    <button class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-3">
+                                Aucune cuve trouvée pour cette station
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="mt-3">
+            <a href="{{ path('admin.stations') }}" class="btn btn-outline-dark">
+                <i class="fas fa-arrow-left"></i> Retour aux stations
+            </a>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll('.cuve-container').forEach(function(container) {
+                const percent = container.getAttribute('data-stock');
+                const fill = container.querySelector('.cuve-fill');
+                fill.style.width = percent + '%';
+            });
+        });
+    </script>
+{% endblock %}

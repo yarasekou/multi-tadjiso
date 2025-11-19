@@ -1,0 +1,5 @@
+cls
+php bin/console doctrine:migrations:sync-metadata-storage
+Remove-Item -Force migrations/Version20251026215452.php
+php bin/console doctrine:migrations:diff
+php bin/console doctrine:migrations:migrate

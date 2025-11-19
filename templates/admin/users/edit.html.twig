@@ -1,0 +1,209 @@
+{% extends 'admin.base.html.twig' %}
+
+{% block title %}Modifier l'Utilisateur{% endblock %}
+
+{% block page_title %}Modifier l'Utilisateur{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+    <!-- En-tête -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-uppercase">Modifier l'utilisateur</h1>
+            <p class="text-muted mb-0">
+                <i class="fas fa-user me-1"></i>
+                {{ user.firstname }} {{ user.lastname }}
+            </p>
+        </div>
+        <a href="{{ path('admin.users') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-1"></i> Retour à la liste
+        </a>
+    </div>
+
+        <!-- Carte du formulaire -->
+        <div class="card">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-edit me-2"></i>
+                    Modifier les informations
+                </h5>
+            </div>
+            <div class="card-body">
+                {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': true}}) }}
+
+                <div class="row">
+                    <!-- Colonne gauche -->
+                    <div class="col-md-6">
+                        <!-- Prénom -->
+                        <div class="mb-3">
+                            {{ form_label(form.firstname, 'Prénom *', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">
+                                    <i class="fas fa-user text-muted"></i>
+                                </span>
+                                {{ form_widget(form.firstname, {
+                                    'attr': {
+                                        'class': 'form-control',
+                                        'placeholder': 'Entrez le prénom',
+                                        'required': true
+                                    }
+                                }) }}
+                            </div>
+                            {{ form_errors(form.firstname) }}
+                        </div>
+
+                        <!-- Nom -->
+                        <div class="mb-3">
+                            {{ form_label(form.lastname, 'Nom *', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">
+                                    <i class="fas fa-user text-muted"></i>
+                                </span>
+                                {{ form_widget(form.lastname, {
+                                    'attr': {
+                                        'class': 'form-control',
+                                        'placeholder': 'Entrez le nom',
+                                        'required': true
+                                    }
+                                }) }}
+                            </div>
+                            {{ form_errors(form.lastname) }}
+                        </div>
+
+                        <!-- Email -->
+                        <div class="mb-3">
+                            {{ form_label(form.email, 'Email *', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">
+                                    <i class="fas fa-envelope text-muted"></i>
+                                </span>
+                                {{ form_widget(form.email, {
+                                    'attr': {
+                                        'class': 'form-control',
+                                        'placeholder': 'email@exemple.com',
+                                        'required': true,
+                                        'type': 'email'
+                                    }
+                                }) }}
+                            </div>
+                            {{ form_errors(form.email) }}
+                        </div>
+                    </div>
+
+                    <!-- Colonne droite -->
+                    <div class="col-md-6">
+                        <!-- Téléphone -->
+                        <div class="mb-3">
+                            {{ form_label(form.phone, 'Téléphone', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">
+                                    <i class="fas fa-phone text-muted"></i>
+                                </span>
+                                {{ form_widget(form.phone, {
+                                    'attr': {
+                                        'class': 'form-control',
+                                        'placeholder': 'Ex: +33 1 23 45 67 89'
+                                    }
+                                }) }}
+                            </div>
+                            {{ form_errors(form.phone) }}
+                        </div>
+
+                        <!-- Adresse -->
+                        <div class="mb-3">
+                            {{ form_label(form.address, 'Adresse', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">
+                                    <i class="fas fa-map-marker-alt text-muted"></i>
+                                </span>
+                                {{ form_widget(form.address, {
+                                    'attr': {
+                                        'class': 'form-control',
+                                        'placeholder': 'Adresse complète'
+                                    }
+                                }) }}
+                            </div>
+                            {{ form_errors(form.address) }}
+                        </div>
+
+                        <!-- Mot de passe -->
+                        <div class="mb-3">
+                            {{ form_label(form.password, 'Nouveau mot de passe', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">
+                                    <i class="fas fa-lock text-muted"></i>
+                                </span>
+                                {{ form_widget(form.password, {
+                                    'attr': {
+                                        'class': 'form-control',
+                                        'placeholder': 'Laissez vide pour ne pas modifier'
+                                    }
+                                }) }}
+                                <button type="button" class="input-group-text toggle-password" data-target="{{ form.password.vars.id }}">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="form-text text-info">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Remplissez uniquement si vous souhaitez changer le mot de passe
+                            </div>
+                            {{ form_errors(form.password) }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Informations non modifiables -->
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <h6 class="card-title text-muted">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Informations système (non modifiables)
+                                </h6>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <p class="mb-1">
+                                            <strong>Structure :</strong>
+                                            <span class="text-success">{{ user.structure.name }}</span>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <p class="mb-1">
+                                            <strong>Niveau :</strong>
+                                            <span class="badge bg-secondary">Niveau {{ user.level }}</span>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <p class="mb-1">
+                                            <strong>Créé le :</strong>
+                                            <span class="text-muted">{{ user.createdAt|date('d/m/Y à H:i') }}</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Boutons d'action -->
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="{{ path('admin.users') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-1"></i> Annuler
+                            </a>
+                            <div>
+                                <button type="submit" class="btn btn-warning">
+                                    <i class="fas fa-save me-1"></i> Mettre à jour
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

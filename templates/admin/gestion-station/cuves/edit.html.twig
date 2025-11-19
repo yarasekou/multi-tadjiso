@@ -1,0 +1,209 @@
+{% extends 'admin-station.base.html.twig' %}
+
+{% block stylesheets %}
+    <style>
+        .cuve-wrapper {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center; /* CENTRAGE HORIZONTAL */
+            gap: 25px;
+            height: 300px;
+            margin-top: 15px;
+        }
+        .cuve-container {
+            width: 200px;
+            height: 100%;
+            border: 2px solid #000;
+            position: relative;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .cuve-fill {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background-color: #0d6efd;
+            transition: height 0.5s ease-in-out;
+        }
+        .graduations {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+        .graduations span {
+            font-size: 12px;
+        }
+    </style>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll('.cuve-container').forEach(function(container) {
+                const percent = container.getAttribute('data-stock');
+                const fill = container.querySelector('.cuve-fill');
+                fill.style.height = percent + '%';
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <!-- En-tête -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="h3 mb-0 text-uppercase">{{ title }}</h1>
+                <p class="text-muted mb-0">Gestion des cuves de la station <strong>{{ station.name }}</strong></p>
+            </div>
+
+            <a href="{{ path('admin.station.cuves', {id: station.id}) }}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-1"></i> Retour à la liste
+            </a>
+        </div>
+
+        <!-- Carte du formulaire -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-success text-white">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-oil-can me-2"></i>
+                    Informations de la cuve
+                </h5>
+            </div>
+
+            <div class="card-body">
+                {% set percent = (cuve.stock / cuve.capacity) * 100 %}
+
+                <div class="cuve-wrapper">
+                    <div class="cuve-container">
+                        <div class="cuve-fill" style="height: {{ percent|number_format(0) }}%;"></div>
+                    </div>
+
+                    <div class="graduations">
+                        {% for i in [100,90,80,70,60,50,40,30,20,10,0] %}
+                            <span>{{ i }}%</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': true}}) }}
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <!-- Code cuve -->
+                        <div class="mb-3">
+                            {{ form_label(form.code, null, {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                            <div class="input-group">
+                            <span class="input-group-text bg-light">
+                                <i class="fas fa-barcode text-muted"></i>
+                            </span>
+                                {{ form_widget(form.code, {
+                                    'attr': {
+                                        'class': 'form-control',
+                                        'placeholder': 'Ex: CUV-001',
+                                        'required': true
+                                    }
+                                }) }}
+                            </div>
+                            {{ form_errors(form.code) }}
+                        </div>
+
+                        <!-- Capacité -->
+                        <div class="mb-3">
+                            {{ form_label(form.capacity, null, {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                            <div class="input-group">
+                            <span class="input-group-text bg-light">
+                                <i class="fas fa-tachometer-alt text-muted"></i>
+                            </span>
+                                {{ form_widget(form.capacity, {
+                                    'attr': {
+                                        'class': 'form-control',
+                                        'placeholder': 'Capacité en litres',
+                                        'required': true
+                                    }
+                                }) }}
+                            </div>
+                            {{ form_errors(form.capacity) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(form.stock, null, {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                            <div class="input-group">
+                            <span class="input-group-text bg-light">
+                                <i class="fas fa-tachometer-alt text-muted"></i>
+                            </span>
+                                {{ form_widget(form.stock, {
+                                    'attr': {
+                                        'class': 'form-control',
+                                        'placeholder': 'Stock',
+                                        'required': true
+                                    }
+                                }) }}
+                            </div>
+                            {{ form_errors(form.stock) }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <!-- Type Carburant -->
+                        <div class="mb-3">
+                            {{ form_label(form.typeCarburant, null, {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                            <div class="input-group">
+                            <span class="input-group-text bg-light">
+                                <i class="fas fa-gas-pump text-muted"></i>
+                            </span>
+                                {{ form_widget(form.typeCarburant, {
+                                    'attr': {'class': 'form-select'}
+                                }) }}
+                            </div>
+                            {{ form_errors(form.typeCarburant) }}
+                        </div>
+                        <!-- Description -->
+                        <div class="mb-3">
+                            {{ form_label(form.description, null, {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                            {{ form_widget(form.description, {
+                                'attr': {
+                                    'class': 'form-control',
+                                    'placeholder': 'Description de la cuve...',
+                                    'rows': 5
+                                }
+                            }) }}
+                            {{ form_errors(form.description) }}
+                        </div>
+
+                        <!-- Infos de station -->
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <h6 class="card-title text-primary">
+                                    <i class="fas fa-gas-pump me-1"></i>
+                                    Station
+                                </h6>
+                                <p class="mb-1">
+                                    <strong></strong>
+                                    <span class="text-success">{{ station.name }}</span>
+                                </p>
+                                <p class="mb-0">
+                                    <strong>Affectation :</strong>
+                                    <span class="badge bg-info">Automatique à la station</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Boutons -->
+                <div class="row mt-4">
+                    <div class="col-12 d-flex justify-content-between">
+                        <a href="{{ path('admin.cuves', {id: station.id}) }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-times me-1"></i> Annuler
+                        </a>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-save me-1"></i> Enregistrer
+                        </button>
+                    </div>
+                </div>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

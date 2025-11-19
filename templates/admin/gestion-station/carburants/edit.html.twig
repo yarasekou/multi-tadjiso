@@ -1,0 +1,139 @@
+{% extends 'admin.base.html.twig' %}
+
+{% block title %}Modifier le carburant - {{ station.name }}{% endblock %}
+
+{% block page_title %}Modifier le Carburant{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('admin.dashboard') }}">Dashboard</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="{{ path('admin.stations') }}">Stations</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="{{ path('admin.stations.show', {'id': station.id}) }}">{{ station.name }}</a>
+    </li>
+    <li class="breadcrumb-item active">Modifier</li>
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <!-- En-tête -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="h3 mb-0 text-uppercase">Modifier Carburant</h1>
+                <p class="text-muted mb-0">Modifiez les informations de la station</p>
+            </div>
+            <div class="btn-group">
+                <a href="{{ path('admin.stations.show', {'id': station.id}) }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-1"></i> Retour
+                </a>
+            </div>
+        </div>
+
+        <!-- Messages flash -->
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-2"></i>
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+
+        <div class="row">
+            <!-- Colonne principale -->
+            <div class="col-md-12">
+                <div class="card mb-4">
+                    <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-gas-pump me-2"></i>
+                            Modifier un type de carburant
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        {{ form_start(form, {'attr': {'class': 'ajax-form', 'data-refresh': 'true'}}) }}
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form_label(form.name) }}
+                                {{ form_widget(form.name) }}
+                                {{ form_errors(form.name) }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form_label(form.unitPrice) }}
+                                <div class="input-group">
+                                    {{ form_widget(form.unitPrice) }}
+                                    <span class="input-group-text">FCFA</span>
+                                </div>
+                                {{ form_errors(form.unitPrice) }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                {{ form_label(form.description) }}
+                                {{ form_widget(form.description) }}
+                                {{ form_errors(form.description) }}
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-plus me-1"></i> Modifier le carburant
+                                </button>
+                                <small class="text-muted ms-2">
+                                    Le carburant sera disponible pour toutes les stations
+                                </small>
+                            </div>
+                        </div>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .form-check-group {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 1rem;
+            background: #f8f9fa;
+        }
+
+        .form-check {
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-check:hover {
+            background-color: #e9ecef;
+        }
+
+        .form-check-input {
+            margin-right: 0.5rem;
+        }
+
+        .form-check-label {
+            margin-left: 0;
+        }
+
+        .list-group-item {
+            border: none;
+            padding: 0.75rem 0;
+        }
+
+        .badge {
+            font-size: 0.7rem;
+        }
+    </style>
+{% endblock %}

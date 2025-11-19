@@ -1,0 +1,71 @@
+{% extends 'admin-station.base.html.twig' %}
+
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="h3 mb-0 text-uppercase">Gestion des Stations</h1>
+                <p class="text-muted mb-0">Pompes de la station : <strong>{{ station.name }}</strong></p>
+            </div>
+            <a href="{{ path('admin.station.pompes.new', { id: station.id }) }}" class="btn btn-success">
+                <i class="fas fa-plus-circle"></i> Ajouter une pompe
+            </a>
+        </div>
+
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ type }} alert-dismissible fade show">
+                    <i class="fas fa-info-circle me-2"></i>{{ message }}
+                    <button class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <i class="fas fa-tools me-2"></i> Liste des pompes
+            </div>
+
+            <div class="card-body">
+                {% if pompes|length > 0 %}
+                    <table class="table table-hover table-striped">
+                        <thead class="table-dark">
+                        <tr>
+                            <th>Code</th>
+                            <th>Pistolets</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for pompe in pompes %}
+                            <tr>
+                                <td class="fw-bold">{{ pompe.code }}</td>
+                                <td>
+                                    {{ pompe.pistolets|length }} pistolet(s)
+                                </td>
+                                <td>
+                                    <a href="{{ path('admin.station.pompes.edit', {id: station.id, pompeId: pompe.id}) }}" class="btn btn-outline-warning btn-sm">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+
+                                    <form action="{{ path('admin.station.pompes.delete', {id: station.id, pompeId: pompe.id}) }}" method="post" class="d-inline" onsubmit="return confirm('Supprimer ?')">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ pompe.id) }}">
+                                        <button class="btn btn-outline-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <div class="text-center py-4 text-muted">
+                        Aucune pompe trouvée pour cette station.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

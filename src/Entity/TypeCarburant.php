@@ -1,5 +1,4 @@
 <?php
-// src/Entity/TypeCarburant.php
 
 namespace App\Entity;
 
@@ -22,12 +21,6 @@ class TypeCarburant
     #[ORM\Column]
     private ?int $unitPrice = null;
 
-    /**
-     * @var Collection<int, Station>
-     */
-    #[ORM\ManyToMany(targetEntity: Station::class, mappedBy: 'typeCarburants')]
-    private Collection $stations;
-
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
@@ -37,9 +30,32 @@ class TypeCarburant
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
+    /**
+     * @var Collection<int, Cuve>
+     */
+    #[ORM\OneToMany(targetEntity: Cuve::class, mappedBy: 'typeCarburant')]
+    private Collection $cuves;
+
+    #[ORM\ManyToOne(inversedBy: 'typeCarburants')]
+    private ?Station $station = null;
+
+    /**
+     * @var Collection<int, GlobalStockage>
+     */
+    #[ORM\OneToMany(targetEntity: GlobalStockage::class, mappedBy: 'typeCarburant')]
+    private Collection $globalStockages;
+
+    /**
+     * @var Collection<int, Pistolet>
+     */
+    #[ORM\OneToMany(targetEntity: Pistolet::class, mappedBy: 'typeCarburant')]
+    private Collection $pistolets;
+
     public function __construct()
     {
-        $this->stations = new ArrayCollection();
+        $this->cuves = new ArrayCollection();
+        $this->globalStockages = new ArrayCollection();
+        $this->pistolets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -67,33 +83,6 @@ class TypeCarburant
     public function setUnitPrice(int $unitPrice): static
     {
         $this->unitPrice = $unitPrice;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Station>
-     */
-    public function getStations(): Collection
-    {
-        return $this->stations;
-    }
-
-    public function addStation(Station $station): static
-    {
-        if (!$this->stations->contains($station)) {
-            $this->stations->add($station);
-            $station->addTypeCarburant($this);
-        }
-
-        return $this;
-    }
-
-    public function removeStation(Station $station): static
-    {
-        if ($this->stations->removeElement($station)) {
-            $station->removeTypeCarburant($this);
-        }
 
         return $this;
     }
@@ -137,5 +126,107 @@ class TypeCarburant
     public function __toString(): string
     {
         return $this->name ?? '';
+    }
+
+    /**
+     * @return Collection<int, Cuve>
+     */
+    public function getCuves(): Collection
+    {
+        return $this->cuves;
+    }
+
+    public function addCuve(Cuve $cuve): static
+    {
+        if (!$this->cuves->contains($cuve)) {
+            $this->cuves->add($cuve);
+            $cuve->setTypeCarburant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCuve(Cuve $cuve): static
+    {
+        if ($this->cuves->removeElement($cuve)) {
+            // set the owning side to null (unless already changed)
+            if ($cuve->getTypeCarburant() === $this) {
+                $cuve->setTypeCarburant(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getStation(): ?Station
+    {
+        return $this->station;
+    }
+
+    public function setStation(?Station $station): static
+    {
+        $this->station = $station;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, GlobalStockage>
+     */
+    public function getGlobalStockages(): Collection
+    {
+        return $this->globalStockages;
+    }
+
+    public function addGlobalStockage(GlobalStockage $globalStockage): static
+    {
+        if (!$this->globalStockages->contains($globalStockage)) {
+            $this->globalStockages->add($globalStockage);
+            $globalStockage->setTypeCarburant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGlobalStockage(GlobalStockage $globalStockage): static
+    {
+        if ($this->globalStockages->removeElement($globalStockage)) {
+            // set the owning side to null (unless already changed)
+            if ($globalStockage->getTypeCarburant() === $this) {
+                $globalStockage->setTypeCarburant(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Pistolet>
+     */
+    public function getPistolets(): Collection
+    {
+        return $this->pistolets;
+    }
+
+    public function addPistolet(Pistolet $pistolet): static
+    {
+        if (!$this->pistolets->contains($pistolet)) {
+            $this->pistolets->add($pistolet);
+            $pistolet->setTypeCarburant($this);
+        }
+
+        return $this;
+    }
+
+    public function removePistolet(Pistolet $pistolet): static
+    {
+        if ($this->pistolets->removeElement($pistolet)) {
+            // set the owning side to null (unless already changed)
+            if ($pistolet->getTypeCarburant() === $this) {
+                $pistolet->setTypeCarburant(null);
+            }
+        }
+
+        return $this;
     }
 }

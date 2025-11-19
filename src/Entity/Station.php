@@ -1,5 +1,4 @@
 <?php
-// src/Entity/Station.php
 
 namespace App\Entity;
 
@@ -28,13 +27,6 @@ class Station
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $phone = null;
 
-    /**
-     * @var Collection<int, TypeCarburant>
-     */
-    #[ORM\ManyToMany(targetEntity: TypeCarburant::class, inversedBy: 'stations')]
-    #[ORM\JoinTable(name: 'type_carburant_station')]
-    private Collection $typeCarburants;
-
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
@@ -44,9 +36,29 @@ class Station
     #[ORM\ManyToOne(inversedBy: 'stations')]
     private ?Structure $structure = null;
 
+    /**
+     * @var Collection<int, Cuve>
+     */
+    #[ORM\OneToMany(targetEntity: Cuve::class, mappedBy: 'station')]
+    private Collection $cuves;
+
+    /**
+     * @var Collection<int, TypeCarburant>
+     */
+    #[ORM\OneToMany(targetEntity: TypeCarburant::class, mappedBy: 'station')]
+    private Collection $typeCarburants;
+
+    /**
+     * @var Collection<int, Pompe>
+     */
+    #[ORM\OneToMany(targetEntity: Pompe::class, mappedBy: 'station')]
+    private Collection $pompes;
+
     public function __construct()
     {
+        $this->cuves = new ArrayCollection();
         $this->typeCarburants = new ArrayCollection();
+        $this->pompes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -102,36 +114,6 @@ class Station
         return $this;
     }
 
-    /**
-     * @return Collection<int, TypeCarburant>
-     */
-    public function getTypeCarburants(): Collection
-    {
-        return $this->typeCarburants;
-    }
-
-    public function setTypeCarburants(Collection $typeCarburants): static
-    {
-        $this->typeCarburants = $typeCarburants;
-        return $this;
-    }
-
-    public function addTypeCarburant(TypeCarburant $typeCarburant): static
-    {
-        if (!$this->typeCarburants->contains($typeCarburant)) {
-            $this->typeCarburants->add($typeCarburant);
-        }
-
-        return $this;
-    }
-
-    public function removeTypeCarburant(TypeCarburant $typeCarburant): static
-    {
-        $this->typeCarburants->removeElement($typeCarburant);
-
-        return $this;
-    }
-
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
@@ -164,6 +146,96 @@ class Station
     public function setStructure(?Structure $structure): static
     {
         $this->structure = $structure;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Cuve>
+     */
+    public function getCuves(): Collection
+    {
+        return $this->cuves;
+    }
+
+    public function addCuve(Cuve $cuve): static
+    {
+        if (!$this->cuves->contains($cuve)) {
+            $this->cuves->add($cuve);
+            $cuve->setStation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCuve(Cuve $cuve): static
+    {
+        if ($this->cuves->removeElement($cuve)) {
+            // set the owning side to null (unless already changed)
+            if ($cuve->getStation() === $this) {
+                $cuve->setStation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TypeCarburant>
+     */
+    public function getTypeCarburants(): Collection
+    {
+        return $this->typeCarburants;
+    }
+
+    public function addTypeCarburant(TypeCarburant $typeCarburant): static
+    {
+        if (!$this->typeCarburants->contains($typeCarburant)) {
+            $this->typeCarburants->add($typeCarburant);
+            $typeCarburant->setStation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTypeCarburant(TypeCarburant $typeCarburant): static
+    {
+        if ($this->typeCarburants->removeElement($typeCarburant)) {
+            // set the owning side to null (unless already changed)
+            if ($typeCarburant->getStation() === $this) {
+                $typeCarburant->setStation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Pompe>
+     */
+    public function getPompes(): Collection
+    {
+        return $this->pompes;
+    }
+
+    public function addPompe(Pompe $pompe): static
+    {
+        if (!$this->pompes->contains($pompe)) {
+            $this->pompes->add($pompe);
+            $pompe->setStation($this);
+        }
+
+        return $this;
+    }
+
+    public function removePompe(Pompe $pompe): static
+    {
+        if ($this->pompes->removeElement($pompe)) {
+            // set the owning side to null (unless already changed)
+            if ($pompe->getStation() === $this) {
+                $pompe->setStation(null);
+            }
+        }
 
         return $this;
     }

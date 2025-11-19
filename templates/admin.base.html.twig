@@ -63,12 +63,14 @@
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <a href="#" class="brand-link">
             <i class="fas fa-tachometer-alt brand-icon"></i>
-            <span class="brand-text font-weight-light">Admin Panel</span>
+            <span class="brand-text font-weight-light">
+                {{ app.user.structure.name }}
+            </span>
         </a>
 
         <div class="sidebar">
             <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
+                <ul class="nav nav-primary nav-sidebar flex-column" data-widget="treeview" role="menu">
                     <li class="nav-item">
                         <a href="{{ path('admin.dashboard') }}" class="nav-link">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -77,26 +79,26 @@
                     </li>
                     <li class="nav-item">
                         <a href="{{ path('admin.structure') }}" class="nav-link">
-                            <i class="nav-icon fas fa-users"></i>
-                            <p>Notre Structure</p>
+                            <i class="nav-icon fas fa-building"></i>
+                            <p>Structure</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ path('admin.users') }}" class="nav-link">
-                            <i class="nav-icon fas fa-users"></i>
-                            <p>Les admins</p>
+                            <i class="nav-icon fas fa-user-shield"></i>
+                            <p>Les Utilisateurs</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ path('admin.stations') }}" class="nav-link">
-                            <i class="nav-icon fas fa-users"></i>
+                            <i class="nav-icon fas fa-gas-pump"></i>
                             <p>Les stations</p>
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-cog"></i>
+                        <a href="" class="nav-link">
+                            <i class="nav-icon fas fa-sliders-h"></i>
                             <p>Paramètres</p>
                         </a>
                     </li>

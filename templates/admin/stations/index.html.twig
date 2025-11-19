@@ -1,0 +1,172 @@
+{% extends 'admin.base.html.twig' %}
+
+{% block title %}Gestion des Stations{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <!-- En-tête -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="h3 mb-0 text-uppercase">Gestion des Stations</h1>
+                <p class="text-muted mb-0">Structure : <strong>{{ structure.name }}</strong></p>
+            </div>
+            <a href="{{ path('admin.stations.new') }}" class="btn btn-success">
+                <i class="fas fa-plus me-1"></i> Nouvelle station
+            </a>
+        </div>
+
+        <!-- Messages flash -->
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-2"></i>
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+
+        <!-- Carte principale -->
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-gas-pump me-2"></i>
+                    Liste des Stations
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if stations|length > 0 %}
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Nom</th>
+                                <th>Adresse</th>
+                                <th>Téléphone</th>
+                                <th>Carburants</th>
+                                <th>Créée le</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for station in stations %}
+                                <tr>
+                                    <td class="fw-bold">#{{ station.id }}</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar-circle-sm bg-info text-white me-3">
+                                                <i class="fas fa-gas-pump"></i>
+                                            </div>
+                                            <div>
+                                                <strong>{{ station.name }}</strong>
+                                                {% if station.description %}
+                                                    <br>
+                                                    <small class="text-muted">{{ station.description|u.truncate(50, '...') }}</small>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <i class="fas fa-map-marker-alt me-1 text-muted"></i>
+                                        {{ station.address|u.truncate(30, '...') }}
+                                    </td>
+                                    <td>
+                                        {% if station.phone %}
+                                            <i class="fas fa-phone me-1 text-muted"></i>
+                                            {{ station.phone }}
+                                        {% else %}
+                                            <span class="text-muted">Non renseigné</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if station.typeCarburants|length > 0 %}
+                                            <div class="d-flex flex-wrap gap-1">
+                                                {% for typeCarburant in station.typeCarburants %}
+                                                    <span class="badge bg-primary">
+                                                        <i class="fas fa-gas-pump me-1"></i>
+                                                            {{ typeCarburant.name }}
+                                                    </span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            <span class="text-muted small">Aucun carburant</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <small class="text-muted">
+                                            {{ station.createdAt|date('d/m/Y') }}
+                                        </small>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="{{ path('admin.station.dashboard', {'id': station.id}) }}"
+                                               class="btn btn-outline-info"
+                                               title="Voir">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a href="{{ path('admin.stations.edit', {'id': station.id}) }}"
+                                               class="btn btn-outline-primary"
+                                               title="Modifier">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <form method="post"
+                                                  action="{{ path('admin.stations.delete', {'id': station.id}) }}"
+                                                  onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette stations ?');"
+                                                  class="d-inline">
+                                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ station.id) }}">
+                                                <button type="submit" class="btn btn-outline-danger" title="Supprimer">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-gas-pump fa-3x text-muted mb-3"></i>
+                        <h4 class="text-muted">Aucune station trouvée</h4>
+                        <p class="text-muted">Commencez par ajouter une nouvelle station à votre structure.</p>
+                        <a href="{{ path('admin.stations.new') }}" class="btn btn-primary">
+                            <i class="fas fa-plus me-1"></i> Ajouter la première station
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+            {% if stations|length > 0 %}
+                <div class="card-footer text-muted">
+                    <small>
+                        <i class="fas fa-info-circle me-1"></i>
+                        {{ stations|length }} station(s) trouvée(s) pour la structure {{ structure.name }}
+                    </small>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <style>
+        .avatar-circle-sm {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+        .table th {
+            border-top: none;
+            font-weight: 600;
+        }
+    </style>
+{% endblock %}

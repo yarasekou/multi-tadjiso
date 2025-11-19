@@ -1,5 +1,5 @@
 <?php
-// src/Controller/Admin/StationController.php
+// src/Controller/admin/StationController.php
 
 namespace App\Controller\Admin;
 
@@ -97,38 +97,33 @@ class StationController extends AbstractController
     {
         $form = $this->createForm(StationType::class, $station);
         $form->handleRequest($request);
+        $carburant = new TypeCarburant();
+        $formCarburant = $this->createForm(TypeCarburantType::class, $carburant);
+        $formCarburant->handleRequest($request);
 
-        // Formulaire pour nouveau carburant
-        $newCarburant = new TypeCarburant();
-        $carburantForm = $this->createForm(TypeCarburantType::class, $newCarburant);
-        $carburantForm->handleRequest($request);
-
-        // Traitement du formulaire de carburant
-        if ($carburantForm->isSubmitted() && $carburantForm->isValid()) {
-            $newCarburant->setCreatedAt(new \DateTimeImmutable());
-            $newCarburant->addStation($station);
-            $entityManager->persist($newCarburant);
+        // Traitement du formulaire carburant
+        if ($formCarburant->isSubmitted() && $formCarburant->isValid()) {
+            $carburant->setCreatedAt(new \DateTimeImmutable());
+            $carburant->setStation($station);
+            $entityManager->persist($carburant);
             $entityManager->flush();
-
-            $this->addFlash('success', 'Type de carburant créé avec succès!');
+            $this->addFlash('success', 'Carburant ajouté avec succès!');
             return $this->redirectToRoute('admin.stations.edit', ['id' => $station->getId()]);
         }
 
         // Traitement du formulaire principal
         if ($form->isSubmitted() && $form->isValid()) {
+            $station->setUpdatedAt(new \DateTimeImmutable());
             $entityManager->flush();
-
             $this->addFlash('success', 'Station modifiée avec succès!');
             return $this->redirectToRoute('admin.stations.show', ['id' => $station->getId()]);
         }
 
-        $allCarburants = $entityManager->getRepository(TypeCarburant::class)->findAll();
-
         return $this->render('admin/stations/edit.html.twig', [
             'station' => $station,
             'form' => $form->createView(),
-            'carburantForm' => $carburantForm->createView(),
-            'allCarburants' => $allCarburants,
+            'carburantForm' => $formCarburant->createView(),
+            'carburant' => $carburant,
         ]);
     }
 

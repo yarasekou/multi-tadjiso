@@ -22,10 +22,9 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         $users = [
-            // Super Admin
             [
                 'firstname' => 'Super',
-                'lastname' => 'Admin',
+                'lastname' => 'admin',
                 'email' => 'superadmin@multitadjiso.ml',
                 'password' => 'superadmin123',
                 'phone' => '+223 76 12 34 56',
@@ -33,7 +32,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
                 'level' => 1,
                 'roles' => ['SUPER_ADMIN'],
                 'enable' => true
-            ]
+            ],
         ];
 
         foreach ($users as $userData) {

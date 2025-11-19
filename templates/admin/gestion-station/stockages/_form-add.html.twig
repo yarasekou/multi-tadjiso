@@ -1,0 +1,64 @@
+{{ form_start(form, {'attr': {'onsubmit':"return confirm('Êtes-vous sûr(e) ?')"}}) }}
+
+<div class="row">
+    <!-- Type de carburant -->
+    <div class="col-md-6 mb-3">
+        <label for="typeCarburant" class="form-label fw-bold">Type de carburant</label>
+        <select class="form-control text-uppercase" id="typeCarburant" name="typeCarburant" required>
+            <option value="">-- CHOISIR TYPE CARBURANT --</option>
+            {% for typeC in typeCarburants %}
+                <option value="{{ typeC.id }}">{{ typeC.name|upper }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- Cuve de stockage -->
+    <div class="col-md-6 mb-3">
+        <label for="cuve" class="form-label fw-bold">Cuve de stockage</label>
+        <select id="cuve" name="cuve" class="form-control text-uppercase" required>
+            <option value="">-- SELECTIONNER UNE CUVE DE STOCKAGE --</option>
+        </select>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Quantité -->
+    <div class="col-md-6 mb-3">
+        {{ form_label(form.quantity, null, {'label_attr': {'class': 'form-label fw-bold'}}) }}
+        {{ form_widget(form.quantity, {'attr': {'class': 'form-control', 'placeholder': 'Quantité'}}) }}
+        {{ form_errors(form.quantity) }}
+    </div>
+
+    <!-- Prix unitaire -->
+    <div class="col-md-6 mb-3">
+        {{ form_label(form.purchasePrice, null, {'label_attr': {'class': 'form-label fw-bold'}}) }}
+        {{ form_widget(form.purchasePrice, {'attr': {'class': 'form-control', 'placeholder': 'Prix unitaire'}}) }}
+        {{ form_errors(form.purchasePrice) }}
+    </div>
+</div>
+
+<div class="row">
+    <!-- Quantité manquante -->
+    <div class="col-md-6 mb-3">
+        {{ form_label(form.missingQuantity, null, {'label_attr': {'class': 'form-label fw-bold'}}) }}
+        {{ form_widget(form.missingQuantity, {'attr': {'class': 'form-control', 'placeholder': 'Quantité manquante'}}) }}
+        {{ form_errors(form.missingQuantity) }}
+    </div>
+
+    <!-- Date -->
+    <div class="col-md-6 mb-3">
+        <label for="createdAt" class="form-label fw-bold">Date</label>
+        <input type="date" class="form-control" id="createdAt" name="createdAt" required>
+    </div>
+</div>
+
+<div class="d-flex justify-content-between mt-4">
+    <a href="{{ path('admin.stockages', {'id': station.id}) }}" class="btn btn-outline-secondary">
+        <i class="fas fa-times me-1"></i> Annuler
+    </a>
+    <button type="submit" class="btn btn-primary">
+        <i class="fas fa-save me-1"></i> Enregistrer
+    </button>
+</div>
+
+{{ form_end(form) }}

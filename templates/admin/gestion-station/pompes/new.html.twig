@@ -1,0 +1,170 @@
+{% extends 'admin-station.base.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid">
+
+        <!-- En-tête -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="h3 mb-0 text-uppercase">{{ title }}</h1>
+                <p class="text-muted mb-0">
+                    Gestion des pompes de la station <strong>{{ station.name }}</strong>
+                </p>
+            </div>
+
+            <a href="{{ path('admin.station.pompes', {id: station.id}) }}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-1"></i> Retour à la liste
+            </a>
+        </div>
+
+        <!-- Carte principale -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-success text-white">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-oil-can me-2"></i> Informations de la pompe
+                </h5>
+            </div>
+
+            <div class="card-body">
+                {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': true}}) }}
+
+                <div class="card shadow-sm p-4">
+
+                    <!-- Code pompe -->
+                    <div class="mb-4">
+                        {{ form_label(form.code, 'Code de la pompe', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-gas-pump"></i></span>
+                            {{ form_widget(form.code, {'attr': {'class': 'form-control', 'placeholder': 'Ex: POM-001'}}) }}
+                        </div>
+                        {{ form_errors(form.code) }}
+                    </div>
+
+                    <!-- Collection de pistolets -->
+                    <div class="mb-4">
+                        <h5 class="mb-3 text-primary">
+                            <i class="fas fa-gas-pump me-1"></i>Pistolets
+                        </h5>
+
+                        <div id="pistolets-wrapper"
+                             data-prototype="{{ form_widget(form.pistolets.vars.prototype)|e('html_attr') }}">
+
+                            {% for pistolet in form.pistolets %}
+                                <div class="pistolet-item card mb-3 shadow-sm position-relative border-primary show">
+                                    <div class="card-body">
+                                        <div class="row g-3 align-items-end">
+
+                                            <!-- Code pistolet -->
+                                            <div class="col-md-4">
+                                                {{ form_label(pistolet.code, 'Code du pistolet', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                                                {{ form_widget(pistolet.code, {'attr': {'class': 'form-control', 'placeholder': 'Ex: PIST-001'}}) }}
+                                                {{ form_errors(pistolet.code) }}
+                                            </div>
+
+                                            <!-- Index pistolet -->
+                                            <div class="col-md-4">
+                                                {{ form_label(pistolet.indexPistolet, 'Index du pistolet', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                                                {{ form_widget(pistolet.indexPistolet, {'attr': {'class': 'form-control', 'placeholder': 'Ex: 1'}}) }}
+                                                {{ form_errors(pistolet.indexPistolet) }}
+                                            </div>
+
+                                            <!-- Type carburant -->
+                                            <div class="col-md-4">
+                                                {{ form_label(pistolet.typeCarburant, 'Type carburant', {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                                                {{ form_widget(pistolet.typeCarburant, {'attr': {'class': 'form-select'}}) }}
+                                                {{ form_errors(pistolet.typeCarburant) }}
+                                            </div>
+                                        </div>
+
+                                        <!-- Supprimer -->
+                                        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-2 remove-pistolet">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <button type="button" class="btn btn-primary btn-sm mt-2" id="add-pistolet">
+                            <i class="fas fa-plus me-1"></i> Ajouter un pistolet
+                        </button>
+                    </div>
+
+                    <!-- Boutons -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{{ path('admin.station.pompes', {id: station.id}) }}" class="btn btn-secondary">
+                            <i class="fas fa-times me-1"></i> Annuler
+                        </a>
+                        <button class="btn btn-success">
+                            <i class="fas fa-save me-1"></i> Enregistrer
+                        </button>
+                    </div>
+
+                </div>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const wrapper = document.getElementById('pistolets-wrapper');
+            let index = wrapper.children.length;
+
+            wrapper.querySelectorAll('.pistolet-item').forEach(div => div.classList.add('show'));
+
+            // Ajouter pistolet
+            const addPistolet = () => {
+                const prototype = wrapper.dataset.prototype;
+                const newForm = prototype.replace(/__name__/g, index);
+
+                const div = document.createElement('div');
+                div.classList.add('pistolet-item', 'card', 'mb-3', 'shadow-sm', 'position-relative');
+                div.innerHTML = `
+                    <div class="card-body">
+                        ${newForm}
+                        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-2 remove-pistolet">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>`;
+
+                wrapper.appendChild(div);
+
+                setTimeout(() => div.classList.add('show'), 10);
+
+                div.querySelector('.remove-pistolet').addEventListener('click', () => removePistolet(div));
+
+                index++;
+            };
+
+            // Supprimer pistolet
+            const removePistolet = (div) => {
+                div.classList.remove('show');
+                div.addEventListener('transitionend', () => div.remove());
+            };
+
+            document.getElementById('add-pistolet').addEventListener('click', addPistolet);
+
+            document.querySelectorAll('.remove-pistolet').forEach(btn => {
+                btn.addEventListener('click', () => removePistolet(btn.closest('.pistolet-item')));
+            });
+
+        });
+    </script>
+
+    <style>
+        .pistolet-item {
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity .3s ease, transform .3s ease;
+        }
+        .pistolet-item.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+{% endblock %}

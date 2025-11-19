@@ -1,5 +1,4 @@
 <?php
-// src/Entity/UserRole.php
 
 namespace App\Entity;
 

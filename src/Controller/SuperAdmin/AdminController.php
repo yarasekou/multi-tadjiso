@@ -58,6 +58,7 @@ class AdminController extends AbstractController
                     return $this->redirectToRoute('super-admin.admins.new');
                 }
 
+
                 // Hasher le mot de passe
                 $plainPassword = $form->get('password')->getData();
                 if ($plainPassword) {
@@ -67,6 +68,7 @@ class AdminController extends AbstractController
 
                 // Définir comme admin et activé
                 $user->setEnable(true)
+                    ->setLevel(3)
                     ->setCreatedAt(new \DateTimeImmutable());
 
                 // Ajouter le rôle ROLE_ADMIN automatiquement

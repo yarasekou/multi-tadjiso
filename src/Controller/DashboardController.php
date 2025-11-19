@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Station;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,10 +32,18 @@ class DashboardController extends AbstractController
         ]);
     }
 
+    #[Route('/admin/stations/{id}/dashboard', name: 'admin.station.dashboard', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function dashboard(Station $station): Response
+    {
+        return $this->render('layouts/admin-station.dashboard.html.twig', [
+            'station' => $station,
+        ]);
+    }
+
     #[Route('/dashboard', name: 'app_dashboard')]
     public function dashboardRedirect(): Response
     {
-        $user = $this->getUser();
 
         if ($this->isGranted('ROLE_SUPER_ADMIN')) {
             return $this->redirectToRoute('super-admin.dashboard');

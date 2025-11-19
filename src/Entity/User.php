@@ -1,11 +1,11 @@
 <?php
-// src/Entity/User.php
 
 namespace App\Entity;
 
 use App\Repository\SuperAdmin\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -54,6 +54,9 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
 
     #[ORM\Column]
     private ?int $level = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $profile = null;
 
     public function __construct()
     {
@@ -263,5 +266,17 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     public function __toString(): string
     {
         return $this->firstname . ' ' . $this->lastname;
+    }
+
+    public function getProfile(): ?string
+    {
+        return $this->profile;
+    }
+
+    public function setProfile(?string $profile): static
+    {
+        $this->profile = $profile;
+
+        return $this;
     }
 }

@@ -1,9 +1,10 @@
 <?php
-// src/Controller/Admin/UserController.php
+// src/Controller/admin/UserController.php
 
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use App\Form\BaseUserType;
 use App\Form\UserType;
 use App\Repository\SuperAdmin\UserRepository;
 use App\Repository\UserRoleRepository;
@@ -56,7 +57,7 @@ class UserController extends AbstractController
         }
 
         $user = new User();
-        $form = $this->createForm(UserType::class, $user, [
+        $form = $this->createForm(BaseUserType::class, $user, [
             'is_creation' => true
         ]);
         $form->handleRequest($request);
@@ -112,7 +113,7 @@ class UserController extends AbstractController
             return $this->redirectToRoute('admin.users');
         }
 
-        $form = $this->createForm(UserType::class, $user, ['is_creation' => false]);
+        $form = $this->createForm(BaseUserType::class, $user, ['is_creation' => false]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

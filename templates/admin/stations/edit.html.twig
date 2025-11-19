@@ -1,0 +1,258 @@
+{% extends 'admin.base.html.twig' %}
+
+{% block title %}Modifier la Station - {{ station.name }}{% endblock %}
+
+{% block page_title %}Modifier la Station{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <!-- En-tête -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="h3 mb-0 text-uppercase">Modifier {{ station.name }}</h1>
+                <p class="text-muted mb-0">Modifiez les informations de la station</p>
+            </div>
+            <div class="btn-group">
+                <a href="{{ path('admin.stations.show', {'id': station.id}) }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-1"></i> Retour
+                </a>
+            </div>
+        </div>
+
+        <!-- Messages flash -->
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-2"></i>
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+
+        <div class="row">
+            <!-- Colonne principale -->
+            <div class="col-md-12">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-edit me-2"></i>
+                            Informations de la station
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        {{ form_start(form) }}
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                {{ form_label(form.name) }}
+                                {{ form_widget(form.name) }}
+                                {{ form_errors(form.name) }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form_label(form.address) }}
+                                {{ form_widget(form.address) }}
+                                {{ form_errors(form.address) }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form_label(form.phone) }}
+                                {{ form_widget(form.phone) }}
+                                {{ form_errors(form.phone) }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                {{ form_label(form.description) }}
+                                {{ form_widget(form.description) }}
+                                {{ form_errors(form.description) }}
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-md-12">
+                                <div class="d-flex gap-2">
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fas fa-save me-1"></i> Enregistrer les modifications
+                                    </button>
+                                    <a href="{{ path('admin.stations.show', {'id': station.id}) }}" class="btn btn-outline-secondary">
+                                        <i class="fas fa-times me-1"></i> Annuler
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-gas-pump me-2"></i>
+                            Gestion des carburants
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead class="table-dark">
+                                <tr>
+                                    <th width="50">#</th>
+                                    <th>Nom du carburant</th>
+                                    <th width="150">Prix unitaire</th>
+                                    <th>Description</th>
+                                    <th width="100" class="text-center">Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for carburant in station.typeCarburants %}
+                                    <tr>
+                                        <td class="fw-bold text-muted">#{{ carburant.id }}</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar-circle-sm bg-info text-white me-3">
+                                                    <i class="fas fa-gas-pump"></i>
+                                                </div>
+                                                <div>
+                                                    <strong>{{ carburant.name }}</strong>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                    <span class="badge bg-success fs-6">
+                                        {{ carburant.unitPrice|number_format(0, ',', ' ') }} FCFA
+                                    </span>
+                                        </td>
+                                        <td>
+                                            {% if carburant.description %}
+                                                <span class="text-muted">{{ carburant.description }}</span>
+                                            {% else %}
+                                                <span class="text-muted fst-italic">Aucune description</span>
+                                            {% endif %}
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="btn-group btn-group-sm">
+                                                <a href="{{ path('admin.typecarburants.edit', {'id': carburant.id}) }}" class="btn btn-outline-primary" title="Modifier">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <form method="post"
+                                                      action="{{ path('admin.typecarburants.delete', {'id': carburant.id}) }}"
+                                                      onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce carburant ?');"
+                                                      class="d-inline">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ carburant.id) }}">
+                                                    <button type="submit" class="btn btn-outline-danger" title="Supprimer">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="6" class="text-center py-4">
+                                            <div class="text-muted">
+                                                <i class="fas fa-gas-pump fa-2x mb-3"></i>
+                                                <h5>Aucun carburant trouvé</h5>
+                                                <p>Commencez par ajouter vos premiers types de carburant.</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-gas-pump me-2"></i>
+                            Ajouter un type de carburant
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        {{ form_start(carburantForm, {'attr': {'class': 'ajax-form', 'data-refresh': 'true'}}) }}
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form_label(carburantForm.name) }}
+                                {{ form_widget(carburantForm.name) }}
+                                {{ form_errors(carburantForm.name) }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form_label(carburantForm.unitPrice) }}
+                                <div class="input-group">
+                                    {{ form_widget(carburantForm.unitPrice) }}
+                                    <span class="input-group-text">FCFA</span>
+                                </div>
+                                {{ form_errors(carburantForm.unitPrice) }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                {{ form_label(carburantForm.description) }}
+                                {{ form_widget(carburantForm.description) }}
+                                {{ form_errors(carburantForm.description) }}
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-plus me-1"></i> Créer le carburant
+                                </button>
+                                <small class="text-muted ms-2">
+                                    Le carburant sera disponible pour toutes les stations
+                                </small>
+                            </div>
+                        </div>
+                        {{ form_end(carburantForm) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .form-check-group {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 1rem;
+            background: #f8f9fa;
+        }
+
+        .form-check {
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-check:hover {
+            background-color: #e9ecef;
+        }
+
+        .form-check-input {
+            margin-right: 0.5rem;
+        }
+
+        .form-check-label {
+            margin-left: 0;
+        }
+
+        .list-group-item {
+            border: none;
+            padding: 0.75rem 0;
+        }
+
+        .badge {
+            font-size: 0.7rem;
+        }
+    </style>
+{% endblock %}
