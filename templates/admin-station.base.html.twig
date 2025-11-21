@@ -94,6 +94,20 @@
                     </li>
 
                     <li class="nav-item">
+                        <a href="{{ path('admin.station.jaugeages', {'id' : station.id}) }}" class="nav-link">
+                            <i class="nav-icon fas fa-ruler-vertical"></i>
+                            <p>Les jaugeages</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ path('admin.station.retourcuves', {'id': station.id}) }}" class="nav-link">
+                            <i class="nav-icon fas fa-oil-can"></i>
+                            <p>Retours Cuves</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
                         <a href="{{ path('admin.station.pompes', {'id': station.id}) }}" class="nav-link">
                             <i class="nav-icon fas fa-users"></i>
                             <p>Les pompes</p>
@@ -101,14 +115,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-ruler-vertical"></i>
-                            <p>Les jaugeages</p>
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{{ path('admin.station.indexations', {'id': station.id}) }}" class="nav-link">
                             <i class="nav-icon fas fa-list-ol"></i>
                             <p>Indexations</p>
                         </a>

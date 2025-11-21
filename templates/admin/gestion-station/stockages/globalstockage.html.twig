@@ -1,0 +1,46 @@
+{% extends 'admin-station.base.html.twig' %}
+
+{% block title %}Gestion des Global Stockages{% endblock %}
+
+{% block body %}
+    <div class="container-fluid py-4">
+
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="h3 mb-0 text-uppercase">Gestion des Global Stockages</h1>
+                <p class="text-muted mb-0">Enregistrement et suivi des carburants</p>
+            </div>
+            <a href="{{ path('admin.stations') }}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-1"></i> Retour
+            </a>
+        </div>
+
+        <!-- Flash Messages -->
+        {% for type in ['success', 'danger'] %}
+            {% for message in app.flashes(type) %}
+                <div class="alert alert-{{ type }} alert-dismissible fade show" role="alert">
+                    <i class="fas fa-{{ type == 'success' ? 'check-circle' : 'exclamation-triangle' }} me-2"></i>{{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        <!-- Formulaire Global Stockage -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-plus me-2"></i>Enregistrer un Global Stockage</h5>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-primary fw-bold text-center mb-4 text-uppercase">
+                    Remplissez le formulaire pour créer un <strong>Global Stockage</strong>
+                </div>
+                {{ include('admin/gestion-station/stockages/_globalstockage_form.html.twig') }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <!-- Ajouter ici les scripts si nécessaire -->
+{% endblock %}

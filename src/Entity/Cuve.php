@@ -44,7 +44,7 @@ class Cuve
     /**
      * @var Collection<int, Stockage>
      */
-    #[ORM\OneToMany(targetEntity: Stockage::class, mappedBy: 'cuves')]
+    #[ORM\OneToMany(targetEntity: Stockage::class, mappedBy: 'cuve')]
     private Collection $stockages;
 
     /**
@@ -53,10 +53,33 @@ class Cuve
     #[ORM\OneToMany(targetEntity: Jaugeage::class, mappedBy: 'cuves')]
     private Collection $jaugeages;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $lastAveragePurchasePrice = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $averagePurchasePrice = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $isLast = null;
+
+    /**
+     * @var Collection<int, CuveMesure>
+     */
+    #[ORM\OneToMany(targetEntity: CuveMesure::class, mappedBy: 'cuve')]
+    private Collection $cuveMesures;
+
+    /**
+     * @var Collection<int, VenteCuve>
+     */
+    #[ORM\OneToMany(targetEntity: VenteCuve::class, mappedBy: 'cuve')]
+    private Collection $venteCuves;
+
     public function __construct()
     {
         $this->stockages = new ArrayCollection();
         $this->jaugeages = new ArrayCollection();
+        $this->cuveMesures = new ArrayCollection();
+        $this->venteCuves = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -214,6 +237,102 @@ class Cuve
             // set the owning side to null (unless already changed)
             if ($jaugeage->getCuve() === $this) {
                 $jaugeage->setCuve(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getLastAveragePurchasePrice(): ?int
+    {
+        return $this->lastAveragePurchasePrice;
+    }
+
+    public function setLastAveragePurchasePrice(?int $lastAveragePurchasePrice): static
+    {
+        $this->lastAveragePurchasePrice = $lastAveragePurchasePrice;
+
+        return $this;
+    }
+
+    public function getAveragePurchasePrice(): ?int
+    {
+        return $this->averagePurchasePrice;
+    }
+
+    public function setAveragePurchasePrice(?int $averagePurchasePrice): static
+    {
+        $this->averagePurchasePrice = $averagePurchasePrice;
+
+        return $this;
+    }
+
+    public function isLast(): ?bool
+    {
+        return $this->isLast;
+    }
+
+    public function setIsLast(?bool $isLast): static
+    {
+        $this->isLast = $isLast;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CuveMesure>
+     */
+    public function getCuveMesures(): Collection
+    {
+        return $this->cuveMesures;
+    }
+
+    public function addCuveMesure(CuveMesure $cuveMesure): static
+    {
+        if (!$this->cuveMesures->contains($cuveMesure)) {
+            $this->cuveMesures->add($cuveMesure);
+            $cuveMesure->setCuve($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCuveMesure(CuveMesure $cuveMesure): static
+    {
+        if ($this->cuveMesures->removeElement($cuveMesure)) {
+            // set the owning side to null (unless already changed)
+            if ($cuveMesure->getCuve() === $this) {
+                $cuveMesure->setCuve(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, VenteCuve>
+     */
+    public function getVenteCuves(): Collection
+    {
+        return $this->venteCuves;
+    }
+
+    public function addVenteCufe(VenteCuve $venteCufe): static
+    {
+        if (!$this->venteCuves->contains($venteCufe)) {
+            $this->venteCuves->add($venteCufe);
+            $venteCufe->setCuve($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVenteCufe(VenteCuve $venteCufe): static
+    {
+        if ($this->venteCuves->removeElement($venteCufe)) {
+            // set the owning side to null (unless already changed)
+            if ($venteCufe->getCuve() === $this) {
+                $venteCufe->setCuve(null);
             }
         }
 

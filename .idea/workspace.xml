@@ -5,62 +5,41 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="22607c98-d96f-44ea-9f4a-e64fe1640314" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/commande.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/packages/knp_paginator.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/admin-station.base.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/admin/gestion-station/carburants/edit.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/admin/gestion-station/cuves/edit.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/admin/gestion-station/cuves/index.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/admin/gestion-station/cuves/new.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/admin/gestion-station/pompes/edit.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/admin/gestion-station/pompes/index.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/admin/gestion-station/pompes/new.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/admin/gestion-station/stockages/_form-add.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/admin/gestion-station/stockages/index.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/layouts/admin-station.dashboard.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controller/Admin/Api/CuveApiController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controller/Admin/Api/PistoletApiController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controller/Admin/IndexationController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controller/Admin/JaugeageController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Form/IndexationType.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/gestion-station/indexations/_form.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/gestion-station/indexations/edit.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/gestion-station/indexations/index.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/gestion-station/jaugeages/_form.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/gestion-station/jaugeages/index.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/gestion-station/retourcuves/edit.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/gestion-station/retourcuves/index.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/gestion-station/stockages/_globalstockage_form.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/gestion-station/stockages/globalstockage.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/gestion-station/stockages/new.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/Multi-tadjiso.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Multi-tadjiso.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/commandlinetools/Symfony_16_10_2025_14_16.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/bundles.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/bundles.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/Version20251023223628.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/Version20251024111459.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/Admin/StationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Admin/StationController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/Admin/TypeCarburantController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Admin/TypeCarburantController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/Admin/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Admin/UserController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/DashboardController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/DashboardController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/SuperAdmin/AdminController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/SuperAdmin/AdminController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataFixtures/UserFixtures.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataFixtures/UserFixtures.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Station.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Station.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Structure.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Structure.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/Admin/StockageController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Admin/GestionStockageController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Cuve.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Cuve.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Pistolet.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Pistolet.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entity/TypeCarburant.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/TypeCarburant.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/UserRole.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/UserRole.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/AdminType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/AdminType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/SuperAdminType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/SuperAdminType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/UserType.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/symfony.lock" beforeDir="false" afterPath="$PROJECT_DIR$/symfony.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Admin/carburants/index.html.twig" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Admin/stations/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin/stations/edit.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Admin/stations/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin/stations/index.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Admin/stations/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin/stations/new.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Admin/stations/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin/stations/show.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Admin/structure/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin/structure/show.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Admin/users/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin/users/edit.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Admin/users/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin/users/index.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Admin/users/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin/users/new.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/admin.base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin.base.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/layouts/admin.dashboard.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/layouts/admin.dashboard.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/super-admin/admins/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/super-admin/admins/new.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/super-admin/structures/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/super-admin/structures/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/CuveType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/CuveType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/PistoletType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/PistoletType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/PompeType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/PompeType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/StockageType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/StockageType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/JaugeageRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/JaugeageRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/StockageRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/StockageRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/admin-station.base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin-station.base.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/admin/gestion-station/stockages/_form-add.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin/gestion-station/stockages/_stockage_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/admin/gestion-station/stockages/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin/gestion-station/stockages/stockage.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/admin/stations/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin/stations/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/admin/stations/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin/stations/show.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -211,6 +190,7 @@
       <path value="$PROJECT_DIR$/vendor/symfony/dotenv" />
       <path value="$PROJECT_DIR$/vendor/symfony/expression-language" />
       <path value="$PROJECT_DIR$/vendor/phpstan/phpdoc-parser" />
+      <path value="$PROJECT_DIR$/vendor/twig/intl-extra" />
     </include_path>
   </component>
   <component name="ProjectColorInfo">{
@@ -243,6 +223,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Yara Sékou\OneDrive\Cours\PHP\FrameWork\Symfony\multi-tadjiso\src\Controller\Admin" />
       <recent name="C:\Users\Yara Sékou\OneDrive\Cours\PHP\FrameWork\Symfony\multi-tadjiso\templates\admin\gestion-station" />
       <recent name="C:\Users\Yara Sékou\OneDrive\Cours\PHP\FrameWork\Symfony\multi-tadjiso\templates\admin\links" />
       <recent name="C:\Users\Yara Sékou\OneDrive\Cours\PHP\FrameWork\Symfony\multi-tadjiso\templates\admin\pompes" />
@@ -265,7 +246,8 @@
       <updated>1763379564425</updated>
       <workItem from="1763379564914" duration="889000" />
       <workItem from="1763380804324" duration="4040000" />
-      <workItem from="1763392998674" duration="39155000" />
+      <workItem from="1763392998674" duration="82005000" />
+      <workItem from="1763723891454" duration="4437000" />
     </task>
     <servers />
   </component>

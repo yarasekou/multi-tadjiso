@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PistoletRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PistoletRepository::class)]
@@ -30,6 +32,24 @@ class Pistolet
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
+
+    /**
+     * @var Collection<int, Indexation>
+     */
+    #[ORM\OneToMany(targetEntity: Indexation::class, mappedBy: 'pistolet')]
+    private Collection $indexations;
+
+    /**
+     * @var Collection<int, VentePistolet>
+     */
+    #[ORM\OneToMany(targetEntity: VentePistolet::class, mappedBy: 'pistolet')]
+    private Collection $ventePistolets;
+
+    public function __construct()
+    {
+        $this->indexations = new ArrayCollection();
+        $this->ventePistolets = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -104,6 +124,66 @@ class Pistolet
     public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Indexation>
+     */
+    public function getIndexations(): Collection
+    {
+        return $this->indexations;
+    }
+
+    public function addIndexation(Indexation $indexation): static
+    {
+        if (!$this->indexations->contains($indexation)) {
+            $this->indexations->add($indexation);
+            $indexation->setPistolet($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIndexation(Indexation $indexation): static
+    {
+        if ($this->indexations->removeElement($indexation)) {
+            // set the owning side to null (unless already changed)
+            if ($indexation->getPistolet() === $this) {
+                $indexation->setPistolet(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, VentePistolet>
+     */
+    public function getVentePistolets(): Collection
+    {
+        return $this->ventePistolets;
+    }
+
+    public function addVentePistolet(VentePistolet $ventePistolet): static
+    {
+        if (!$this->ventePistolets->contains($ventePistolet)) {
+            $this->ventePistolets->add($ventePistolet);
+            $ventePistolet->setPistolet($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVentePistolet(VentePistolet $ventePistolet): static
+    {
+        if ($this->ventePistolets->removeElement($ventePistolet)) {
+            // set the owning side to null (unless already changed)
+            if ($ventePistolet->getPistolet() === $this) {
+                $ventePistolet->setPistolet(null);
+            }
+        }
 
         return $this;
     }

@@ -20,8 +20,8 @@ class StockageRepository extends ServiceEntityRepository
     public function getStockageByStationId($stationId)
     {
         return $this->createQueryBuilder('s')
-            ->leftJoin('s.cuves', 'cuves')
-            ->leftJoin('cuves.station', 'station')
+            ->leftJoin('s.cuve', 'cuve')
+            ->leftJoin('cuve.station', 'station')
             ->where('station.id = :stationId')
             ->setParameter('stationId', $stationId)
             ->orderBy('s.createdAt', 'DESC')

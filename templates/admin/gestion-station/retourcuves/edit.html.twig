@@ -1,0 +1,66 @@
+{% extends 'admin-station.base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-4">
+
+        <h3 class="mb-4 fw-bold">
+            <i class="fas fa-edit text-primary me-2"></i>
+            Modifier un retour – <strong>{{ station.name }}</strong>
+        </h3>
+
+        {% for label, messages in app.flashes %}
+            {% for msg in messages %}
+                <div class="alert alert-{{ label }} alert-dismissible fade show">
+                    {{ msg }}
+                    <button class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+
+                <form method="post">
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Type Carburant</label>
+                        <select name="typeCarburant" class="form-select" required>
+                            {% for type in typeCarburants %}
+                                <option value="{{ type.id }}"
+                                        {% if retourEnCuve.typeCarburant.id == type.id %}selected{% endif %}>
+                                    {{ type.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Quantité</label>
+                        <input value="{{ retourEnCuve.quantity }}"
+                               type="number"
+                               name="retourcuve[quantite]"
+                               class="form-control"
+                               required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Date</label>
+                        <input type="datetime-local"
+                               name="createdAt"
+                               value="{{ retourEnCuve.createdAt|date('Y-m-d\\TH:i') }}"
+                               class="form-control"
+                               required>
+                    </div>
+
+                    <button class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i> Enregistrer les modifications
+                    </button>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+

@@ -1,0 +1,117 @@
+{% extends 'admin-station.base.html.twig' %}
+
+{% block title %}Jaugeages - {{ station.name }}{% endblock %}
+
+{% block body %}
+    <div class="container-fluid py-4">
+
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="h3 mb-0 text-uppercase">Jaugeages des Cuves</h1>
+                <p class="text-muted mb-0">Contrôle du stock réel des cuves</p>
+            </div>
+
+            <a href="{{ path('admin.stations') }}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-1"></i> Retour
+            </a>
+        </div>
+
+        <!-- Flash Messages -->
+        {% for type in ['success', 'danger'] %}
+            {% for message in app.flashes(type) %}
+                <div class="alert alert-{{ type }} alert-dismissible fade show" role="alert">
+                    <i class="fas fa-{{ type == 'success' ? 'check-circle' : 'exclamation-triangle' }} me-2"></i>{{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        <!-- Formulaire de Jaugeage -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-gas-pump me-2"></i>Nouvelle Jauge</h5>
+            </div>
+
+            <div class="card-body">
+                {{ include('admin/gestion-station/jaugeages/_form.html.twig') }}
+            </div>
+        </div>
+
+        <!-- Tableau des jaugeages -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark text-white">
+                <h5 class="mb-0"><i class="fas fa-list me-2"></i>Historique des Jaugeages</h5>
+            </div>
+
+            <div class="card-body table-responsive">
+                <table class="table table-striped table-hover text-center align-middle">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>Cuve</th>
+                        <th>Quantité mesurée</th>
+                        <th>Date</th>
+                        <th>Dernier ?</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for jauge in jaugeages %}
+                        <tr>
+                            <td>
+                                <span class="badge bg-primary">
+                                    {{ jauge.cuve.code }} - {{ jauge.cuve.typeCarburant.name }}
+                                </span>
+                            </td>
+
+                            <td>
+                                <span class="badge bg-warning">{{ jauge.quantity|number_format }} L</span>
+                            </td>
+
+                            <td>
+                                <span class="badge bg-success">{{ jauge.createdAt|date('d/m/Y H:i') }}</span>
+                            </td>
+
+                            <td>
+                                {% if jauge.isLast %}
+                                    <span class="badge bg-success">Oui</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Non</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+                <div class="d-flex justify-content-end">
+                    {{ knp_pagination_render(jaugeages) }}
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+{% block javascripts %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const typeSelect = document.getElementById('typeCarburant');
+        const cuveSelect = document.getElementById('cuve');
+
+        typeSelect.addEventListener('change', function () {
+            cuveSelect.innerHTML = '<option value="">Chargement...</option>';
+
+            fetch('/get-cuves-by-type-carburant/' + this.value)
+                .then(resp => resp.json())
+                .then(data => {
+                    cuveSelect.innerHTML = '<option value="">-- Sélectionner une cuve --</option>';
+                    data.forEach(cuve => {
+                        cuveSelect.innerHTML += `<option value="${cuve.id}">${cuve.numero}</option>`;
+                    });
+                })
+                .catch(() => cuveSelect.innerHTML = '<option value="">Erreur</option>');
+        });
+    });
+</script>
+{% endblock %}

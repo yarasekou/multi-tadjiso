@@ -1,0 +1,69 @@
+{{ form_start(form, {'attr': {'onsubmit':"return confirm('Êtes-vous sûr(e) ?')", 'class': 'needs-validation', 'novalidate': true}}) }}
+
+<div class="row g-3">
+
+    <!-- Type de carburant -->
+    <div class="col-md-6">
+        <label for="stockage_single_typeCarburant" class="form-label fw-bold">Type de carburant</label>
+        <select class="form-select text-uppercase" required autofocus name="typeCarburant" id="stockage_single_typeCarburant">
+            <option value="" selected>-- CHOISIR TYPE CARBURANT --</option>
+            {% for typeC in typeCarburants %}
+                <option value="{{ typeC.id }}">{{ typeC.name|upper }}</option>
+            {% endfor %}
+        </select>
+        <div class="invalid-feedback">
+            Veuillez choisir un type de carburant.
+        </div>
+    </div>
+
+    <!-- Pistolet -->
+    <div class="col-md-6">
+        <label for="stockage_cuve" class="form-label fw-bold">Pistolet</label>
+        <select id="stockage_cuve" name="pistolet" class="form-select text-uppercase" required>
+            <option value="" selected>-- SELECTIONNER UN PISTOLET --</option>
+        </select>
+        <div class="invalid-feedback">
+            Veuillez sélectionner un pistolet.
+        </div>
+    </div>
+
+    <!-- Index du pistolet -->
+    <div class="col-md-6">
+        {{ form_row(form.valIndex, {'label': 'Index du pistolet', 'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    <!-- Date -->
+    <div class="col-md-6">
+        <label for="createdAt" class="form-label fw-bold">Date</label>
+        <input type="date" class="form-control" name="createdAt" id="createdAt" required>
+        <div class="invalid-feedback">
+            Veuillez sélectionner une date.
+        </div>
+    </div>
+
+</div>
+
+<div class="mt-4 d-flex justify-content-end">
+    <button type="submit" name="btnNewIndex" value="1" class="btn btn-primary btn-lg text-uppercase">
+        {{ button_label|default('Enregistrer') }}
+    </button>
+</div>
+
+{{ form_end(form) }}
+
+<script>
+    // Bootstrap validation
+    (function () {
+        'use strict'
+        const forms = document.querySelectorAll('.needs-validation')
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+</script>

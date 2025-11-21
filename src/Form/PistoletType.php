@@ -7,6 +7,7 @@ use App\Entity\Pompe;
 use App\Entity\TypeCarburant;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -17,10 +18,10 @@ class PistoletType extends AbstractType
         $station = $options['station']; // récupère la station passée depuis PompeType
 
         $builder
-            ->add('code', null, [
+            ->add('code', TextType::class, [
                 'label' => 'Code du pistolet',
             ])
-            ->add('indexPistolet', null, [
+            ->add('indexPistolet', TextType::class, [
                 'label' => 'Index du pistolet',
             ])
             ->add('typeCarburant', EntityType::class, [

@@ -1,0 +1,54 @@
+{% extends 'admin-station.base.html.twig' %}
+
+{% block body %}
+    <h3 class="mb-4">{{ stockage is defined ? 'Modifier' : 'Ajouter' }} Stockage</h3>
+
+    {{ form_start(form, {'attr': {'onsubmit':"return confirm('Êtes-vous sûr(e) ?')"}}) }}
+
+    <div class="row">
+        <!-- Global Stockage (Type carburant) -->
+        <div class="col-md-6 mb-3">
+            <label class="form-label fw-bold">Type de carburant</label>
+            <input type="text" class="form-control" value="{{ stockage.gloabalStockage.typeCarburant.name|upper }}" readonly>
+        </div>
+
+        <!-- Cuve -->
+        <div class="col-md-6 mb-3">
+            {{ form_label(form.cuve, 'Cuve', {'label_attr': {'class':'form-label fw-bold'}}) }}
+            {{ form_widget(form.cuve, {'attr': {'class':'form-control text-uppercase'}}) }}
+            {{ form_errors(form.cuve) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            {{ form_label(form.quantity, 'Quantité', {'label_attr': {'class':'form-label fw-bold'}}) }}
+            {{ form_widget(form.quantity, {'attr': {'class':'form-control','placeholder':'Ex: 1000'}}) }}
+            {{ form_errors(form.quantity) }}
+        </div>
+
+        <div class="col-md-4 mb-3">
+            {{ form_label(form.missingQuantity, 'Quantité manquante', {'label_attr': {'class':'form-label fw-bold'}}) }}
+            {{ form_widget(form.missingQuantity, {'attr': {'class':'form-control','placeholder':'Ex: 50'}}) }}
+            {{ form_errors(form.missingQuantity) }}
+        </div>
+
+        <div class="col-md-4 mb-3">
+            {{ form_label(form.purchasePrice, 'Prix d\'achat', {'label_attr': {'class':'form-label fw-bold'}}) }}
+            {{ form_widget(form.purchasePrice, {'attr': {'class':'form-control','placeholder':'Ex: 5000'}}) }}
+            {{ form_errors(form.purchasePrice) }}
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between mt-4">
+        <a href="{{ path('admin.station.stockages', {'id': stockage.cuve.station.id}) }}"
+           class="btn btn-outline-secondary">
+            <i class="fas fa-times me-1"></i> Annuler
+        </a>
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save me-1"></i> {{ stockage is defined ? 'Mettre à jour' : 'Enregistrer' }}
+        </button>
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}

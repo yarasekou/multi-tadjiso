@@ -51,11 +51,18 @@ class TypeCarburant
     #[ORM\OneToMany(targetEntity: Pistolet::class, mappedBy: 'typeCarburant')]
     private Collection $pistolets;
 
+    /**
+     * @var Collection<int, RetourCuve>
+     */
+    #[ORM\OneToMany(targetEntity: RetourCuve::class, mappedBy: 'typeCarburant')]
+    private Collection $retourCuves;
+
     public function __construct()
     {
         $this->cuves = new ArrayCollection();
         $this->globalStockages = new ArrayCollection();
         $this->pistolets = new ArrayCollection();
+        $this->retourCuves = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -224,6 +231,36 @@ class TypeCarburant
             // set the owning side to null (unless already changed)
             if ($pistolet->getTypeCarburant() === $this) {
                 $pistolet->setTypeCarburant(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RetourCuve>
+     */
+    public function getRetourCuves(): Collection
+    {
+        return $this->retourCuves;
+    }
+
+    public function addRetourCufe(RetourCuve $retourCufe): static
+    {
+        if (!$this->retourCuves->contains($retourCufe)) {
+            $this->retourCuves->add($retourCufe);
+            $retourCufe->setTypeCarburant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRetourCufe(RetourCuve $retourCufe): static
+    {
+        if ($this->retourCuves->removeElement($retourCufe)) {
+            // set the owning side to null (unless already changed)
+            if ($retourCufe->getTypeCarburant() === $this) {
+                $retourCufe->setTypeCarburant(null);
             }
         }
 
