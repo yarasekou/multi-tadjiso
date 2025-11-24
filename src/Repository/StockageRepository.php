@@ -38,11 +38,11 @@ class StockageRepository extends ServiceEntityRepository
     public function getQteEntreeByTypeCarburant($typeCarburantId, $date): mixed
     {
         return $this->createQueryBuilder('s')
-            ->leftJoin('s.cuves', 'cuves')
-            ->leftJoin('cuves.typeCarburant', 'typeCarburant')
+            ->leftJoin('s.cuve', 'cuve')
+            ->leftJoin('cuve.typeCarburant', 'typeCarburant')
             ->where('typeCarburant.id = :typeCarburantId')
             ->andWhere('s.createdAt >= :date')
-            ->select('SUM(s.quantite - s.manquant) as SOMME')
+            ->select('SUM(s.quantity - s.missingQuantity) AS SOMME')
             ->setParameter('typeCarburantId', $typeCarburantId)
             ->setParameter('date', $date)
             ->getQuery()

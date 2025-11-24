@@ -74,6 +74,12 @@ class Cuve
     #[ORM\OneToMany(targetEntity: VenteCuve::class, mappedBy: 'cuve')]
     private Collection $venteCuves;
 
+    #[ORM\Column]
+    private ?int $alertQuantity = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $isActived = null;
+
     public function __construct()
     {
         $this->stockages = new ArrayCollection();
@@ -335,6 +341,30 @@ class Cuve
                 $venteCufe->setCuve(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAlertQuantity(): ?int
+    {
+        return $this->alertQuantity;
+    }
+
+    public function setAlertQuantity(int $alertQuantity): static
+    {
+        $this->alertQuantity = $alertQuantity;
+
+        return $this;
+    }
+
+    public function isActived(): ?bool
+    {
+        return $this->isActived;
+    }
+
+    public function setIsActived(bool $isActived): static
+    {
+        $this->isActived = $isActived;
 
         return $this;
     }

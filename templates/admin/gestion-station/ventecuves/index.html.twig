@@ -1,0 +1,240 @@
+{% extends "admin-station.base.html.twig" %}
+
+{% block title %}Gestion des cuves{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .switch { position: relative; display: inline-block; width: 60px; height: 34px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; }
+        .slider:before { position: absolute; content: ""; height: 26px; width: 26px; left: 4px; bottom: 4px; background-color: yellow; transition: .4s; }
+        input:checked + .slider { background-color: #0d6efd; }
+        input:checked + .slider:before { transform: translateX(26px); }
+        .slider.round { border-radius: 34px; }
+        .slider.round:before { border-radius: 50%; }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid py-4">
+
+        <!-- HEADER -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="text-uppercase fw-bold">Gestion des cuves</h3>
+            <a href="{{ path('admin.stations') }}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-1"></i> Retour
+            </a>
+        </div>
+
+        <!-- Flash messages -->
+        {% for type in ['success', 'danger'] %}
+            {% for message in app.flashes(type) %}
+                <div class="alert alert-{{ type }} alert-dismissible fade show text-uppercase fw-bold" role="alert">
+                    <i class="fas fa-{{ type == 'success' ? 'check-circle' : 'exclamation-triangle' }} me-2"></i>{{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        {% if errors is defined %}
+            {% for error in errors %}
+                <div class="alert alert-danger alert-dismissible fade show text-uppercase fw-bold">{{ error }}</div>
+            {% endfor %}
+        {% endif %}
+
+        {% if errorJaugeages is defined %}
+            {% for error in errorJaugeages %}
+                <div class="alert alert-danger alert-dismissible fade show text-uppercase fw-bold">{{ error }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- LISTE DES CUVES -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-database me-2"></i>Liste des cuves</h5>
+            </div>
+
+            <div class="card-body table-responsive">
+                {% if cuves is not empty %}
+                    <table class="table table-striped table-hover text-center align-middle">
+                        <thead class="table-dark text-uppercase">
+                        <tr>
+                            <th>Numéro</th>
+                            <th>Capacité</th>
+                            <th>Stock</th>
+                            <th>Libre</th>
+                            <th>En cours</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for cuve in cuves %}
+                            <tr>
+                                <td><span class="badge bg-dark">{{ cuve.code }} | {{ cuve.typeCarburant.name }}</span></td>
+                                <td><span class="badge bg-info">{{ cuve.capacity|number_format }} L</span></td>
+                                <td><span class="badge bg-success">{{ cuve.stock|number_format }} L</span></td>
+                                <td><span class="badge bg-danger">{{ (cuve.capacity - cuve.stock)|number_format }} L</span></td>
+                                <td>
+                                    {% if cuve.isActived %}
+                                        <span class="badge bg-primary">OUI</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">NON</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a class="btn btn-warning btn-sm" href="#">
+                                        <i class="fas fa-eye"></i> Détail
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                        <tfoot class="text-uppercase text-end">
+
+                        <tr>
+                            <td colspan="6">
+                                {% for key,value in arrayQteStock %}
+                                    <span class="badge bg-danger me-2">{{ key|upper }} : {{ value|number_format }} L</span>
+                                {% endfor %}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="6" class="small text-muted">
+                                Quantités restantes selon entrées & sorties depuis le 01/01/2025
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="6">
+                                <span class="badge bg-success me-2">ESSENCE : {{ qteEssenceFromStockage|number_format }} L</span>
+                                <span class="badge bg-success">GASOIL : {{ qteGasoilFromStockage|number_format }} L</span>
+                            </td>
+                        </tr>
+
+                        </tfoot>
+                    </table>
+                {% else %}
+                    <div class="alert alert-danger text-center fw-bold text-uppercase">
+                        Vous n'avez pas de cuve enregistrée
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- SORTIES RECENTES -->
+        <h4 class="fw-bold text-uppercase mt-4">Sorties récentes</h4>
+        <hr>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body table-responsive">
+                {% if cuveYesterDayVentes is not empty %}
+                    <table class="table table-striped table-hover text-center align-middle text-uppercase">
+                        <thead class="table-dark">
+                        <tr>
+                            <th>Type</th>
+                            <th>Qte</th>
+                            <th>Montant A</th>
+                            <th>Montant V</th>
+                            <th>Gain</th>
+                            <th>Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for vente in cuveYesterDayVentes %}
+                            <tr>
+                                <td><span class="badge bg-dark">{{ vente.type }}</span></td>
+                                <td><span class="badge bg-primary">{{ vente.qte|number_format }} L</span></td>
+                                <td><span class="badge bg-success">{{ vente.montantAchat|number_format }} F</span></td>
+                                <td><span class="badge bg-danger">{{ vente.montantVente|number_format }} F</span></td>
+                                <td><span class="badge bg-warning">{{ vente.gain|number_format }} F</span></td>
+                                <td><span class="badge bg-info">{{ vente.date|date('d-m-Y') }}</span></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <div class="alert alert-danger text-center fw-bold text-uppercase">
+                        Pas de sorties récentes
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- BOUTONS FOOTER -->
+        <div class="text-end mb-4">
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#etatCuveModal">États cuves</button>
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#sortiCuveModal">Sorties par date</button>
+        </div>
+
+        <!-- MODAL ETAT CUVES -->
+        <div class="modal fade" id="etatCuveModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title fw-bold">Changement état cuves</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <form method="POST" action="{{ path('admin.station.ventecuves.etats', {'id': station.id}) }}" class="p-3 text-center" onsubmit="return confirm('Confirmer ?')">
+                        <div class="row g-3">
+                            {% for cuve in cuves %}
+                                <div class="col-md-4 border p-3">
+                                    <label class="switch">
+                                        <input type="checkbox" name="{{ cuve.code }}" {% if cuve.isActived %}checked{% endif %}>
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <div class="fw-bold mt-2">{{ cuve.code }}</div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="text-end mt-3">
+                            <button type="submit" class="btn btn-danger">Enregistrer</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL SORTIES PAR DATE -->
+        <div class="modal fade" id="sortiCuveModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <div class="modal-header bg-success text-white">
+                        <h5 class="modal-title fw-bold">Sorties par date</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <form method="POST" class="p-3 fw-bold text-uppercase" onsubmit="return confirm('Confirmer ?')">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Date inférieure</label>
+                                <input type="date" class="form-control" name="dateInf" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Date supérieure</label>
+                                <input type="date" class="form-control" name="dateSup" required>
+                            </div>
+                        </div>
+                        <div class="text-end mt-3">
+                            <button type="submit" class="btn btn-outline-primary">Envoyer</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(".alert").delay(6000).slideUp(200, function () {
+            $(this).alert('close');
+        });
+    </script>
+{% endblock %}

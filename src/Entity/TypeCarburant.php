@@ -57,12 +57,19 @@ class TypeCarburant
     #[ORM\OneToMany(targetEntity: RetourCuve::class, mappedBy: 'typeCarburant')]
     private Collection $retourCuves;
 
+    /**
+     * @var Collection<int, BonClient>
+     */
+    #[ORM\OneToMany(targetEntity: BonClient::class, mappedBy: 'typeCarburant')]
+    private Collection $bonClients;
+
     public function __construct()
     {
         $this->cuves = new ArrayCollection();
         $this->globalStockages = new ArrayCollection();
         $this->pistolets = new ArrayCollection();
         $this->retourCuves = new ArrayCollection();
+        $this->bonClients = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -261,6 +268,36 @@ class TypeCarburant
             // set the owning side to null (unless already changed)
             if ($retourCufe->getTypeCarburant() === $this) {
                 $retourCufe->setTypeCarburant(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BonClient>
+     */
+    public function getBonClients(): Collection
+    {
+        return $this->bonClients;
+    }
+
+    public function addBonClient(BonClient $bonClient): static
+    {
+        if (!$this->bonClients->contains($bonClient)) {
+            $this->bonClients->add($bonClient);
+            $bonClient->setTypeCarburant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBonClient(BonClient $bonClient): static
+    {
+        if ($this->bonClients->removeElement($bonClient)) {
+            // set the owning side to null (unless already changed)
+            if ($bonClient->getTypeCarburant() === $this) {
+                $bonClient->setTypeCarburant(null);
             }
         }
 

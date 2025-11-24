@@ -5,41 +5,42 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="22607c98-d96f-44ea-9f4a-e64fe1640314" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Controller/Admin/Api/CuveApiController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Controller/Admin/Api/PistoletApiController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Controller/Admin/IndexationController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Controller/Admin/JaugeageController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Form/IndexationType.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/admin/gestion-station/indexations/_form.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/admin/gestion-station/indexations/edit.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/admin/gestion-station/indexations/index.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/admin/gestion-station/jaugeages/_form.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/admin/gestion-station/jaugeages/index.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/admin/gestion-station/retourcuves/edit.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/admin/gestion-station/retourcuves/index.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/admin/gestion-station/stockages/_globalstockage_form.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/admin/gestion-station/stockages/globalstockage.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/admin/gestion-station/stockages/new.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controller/Admin/Ventes/CarburantTotal.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controller/Admin/Ventes/VenteCuveController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controller/Admin/Ventes/VenteGlobalTypeCarburant.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controller/Admin/Ventes/VentePistoletController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/gestion-station/etats/index.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/gestion-station/mypdf.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/gestion-station/ventecuves/index.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/Multi-tadjiso.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Multi-tadjiso.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/controllers.json" beforeDir="false" afterPath="$PROJECT_DIR$/assets/controllers.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/Admin/StockageController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Admin/GestionStockageController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20251116113511.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20251116152020.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20251116154711.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20251116192647.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20251116193917.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20251116235923.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20251117122906.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20251118114039.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20251119235909.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20251120002719.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20251120112104.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20251120130228.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20251120135203.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20251120141643.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entity/Cuve.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Cuve.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Pistolet.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Pistolet.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Station.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Station.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entity/TypeCarburant.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/TypeCarburant.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/CuveType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/CuveType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/PistoletType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/PistoletType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/PompeType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/PompeType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/StockageType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/StockageType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repository/JaugeageRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/JaugeageRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/CuveRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/CuveRepository.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Repository/StockageRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/StockageRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/VenteCuveRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/VenteCuveRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/VentePistoletRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/VentePistoletRepository.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/admin-station.base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin-station.base.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/admin/gestion-station/stockages/_form-add.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin/gestion-station/stockages/_stockage_form.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/admin/gestion-station/stockages/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin/gestion-station/stockages/stockage.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/admin/stations/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin/stations/index.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/admin/stations/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin/stations/show.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +54,7 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="$PROJECT_DIR$/../../../../../../../../laragon/bin/php/php-8.3.16-Win32-vs16-x64/php.exe">
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="$PROJECT_DIR$/../../../../../../../laragon/bin/php/php-8.3.16-Win32-vs16-x64/php.exe">
     <include_path>
       <path value="$PROJECT_DIR$/vendor/composer" />
       <path value="$PROJECT_DIR$/vendor/knplabs/knp-components" />
@@ -191,6 +192,10 @@
       <path value="$PROJECT_DIR$/vendor/symfony/expression-language" />
       <path value="$PROJECT_DIR$/vendor/phpstan/phpdoc-parser" />
       <path value="$PROJECT_DIR$/vendor/twig/intl-extra" />
+      <path value="$PROJECT_DIR$/vendor/dompdf/php-font-lib" />
+      <path value="$PROJECT_DIR$/vendor/dompdf/dompdf" />
+      <path value="$PROJECT_DIR$/vendor/dompdf/php-svg-lib" />
+      <path value="$PROJECT_DIR$/vendor/sabberworm/php-css-parser" />
     </include_path>
   </component>
   <component name="ProjectColorInfo">{
@@ -223,6 +228,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\User\Documents\Php\FrameWork\Symfony 7\multi-tadjiso\templates\admin\gestion-station" />
       <recent name="C:\Users\Yara Sékou\OneDrive\Cours\PHP\FrameWork\Symfony\multi-tadjiso\src\Controller\Admin" />
       <recent name="C:\Users\Yara Sékou\OneDrive\Cours\PHP\FrameWork\Symfony\multi-tadjiso\templates\admin\gestion-station" />
       <recent name="C:\Users\Yara Sékou\OneDrive\Cours\PHP\FrameWork\Symfony\multi-tadjiso\templates\admin\links" />
@@ -232,8 +238,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-PS-252.27397.112" />
-        <option value="bundled-php-predefined-a98d8de5180a-b35feea871ed-com.jetbrains.php.sharedIndexes-PS-252.27397.112" />
+        <option value="bundled-js-predefined-d6986cc7102b-a71380e98a7c-JavaScript-PS-252.28238.9" />
+        <option value="bundled-php-predefined-a98d8de5180a-58f58c5035b3-com.jetbrains.php.sharedIndexes-PS-252.28238.9" />
       </set>
     </attachedChunks>
   </component>
@@ -248,6 +254,9 @@
       <workItem from="1763380804324" duration="4040000" />
       <workItem from="1763392998674" duration="82005000" />
       <workItem from="1763723891454" duration="4437000" />
+      <workItem from="1763736027236" duration="880000" />
+      <workItem from="1763736920311" duration="235000" />
+      <workItem from="1763737353390" duration="23890000" />
     </task>
     <servers />
   </component>

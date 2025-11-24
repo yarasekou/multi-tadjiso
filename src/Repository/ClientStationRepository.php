@@ -2,37 +2,22 @@
 
 namespace App\Repository;
 
-use App\Entity\Cuve;
+use App\Entity\ClientStation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Cuve>
+ * @extends ServiceEntityRepository<ClientStation>
  */
-class CuveRepository extends ServiceEntityRepository
+class ClientStationRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Cuve::class);
-    }
-
-    /**
-     * @param int $stationId
-     * @return int|mixed|string|Cuve[]
-     */
-    public function getCuveByStation(int $stationId)
-    {
-        return $this->createQueryBuilder('c')
-            ->leftJoin('c.station', 'station')
-            ->where('station.id = :stationId')
-            ->setParameter('stationId', $stationId)
-            ->orderBy('c.id', 'ASC')
-            ->getQuery()
-            ->getResult();
+        parent::__construct($registry, ClientStation::class);
     }
 
 //    /**
-//     * @return Cuve[] Returns an array of Cuve objects
+//     * @return ClientStation[] Returns an array of ClientStation objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -46,7 +31,7 @@ class CuveRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Cuve
+//    public function findOneBySomeField($value): ?ClientStation
 //    {
 //        return $this->createQueryBuilder('c')
 //            ->andWhere('c.exampleField = :val')

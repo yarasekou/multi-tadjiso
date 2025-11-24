@@ -54,11 +54,25 @@ class Station
     #[ORM\OneToMany(targetEntity: Pompe::class, mappedBy: 'station')]
     private Collection $pompes;
 
+    /**
+     * @var Collection<int, Depense>
+     */
+    #[ORM\OneToMany(targetEntity: Depense::class, mappedBy: 'station')]
+    private Collection $depenses;
+
+    /**
+     * @var Collection<int, ClientStation>
+     */
+    #[ORM\OneToMany(targetEntity: ClientStation::class, mappedBy: 'station')]
+    private Collection $clientStations;
+
     public function __construct()
     {
         $this->cuves = new ArrayCollection();
         $this->typeCarburants = new ArrayCollection();
         $this->pompes = new ArrayCollection();
+        $this->depenses = new ArrayCollection();
+        $this->clientStations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -234,6 +248,66 @@ class Station
             // set the owning side to null (unless already changed)
             if ($pompe->getStation() === $this) {
                 $pompe->setStation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Depense>
+     */
+    public function getDepenses(): Collection
+    {
+        return $this->depenses;
+    }
+
+    public function addDepense(Depense $depense): static
+    {
+        if (!$this->depenses->contains($depense)) {
+            $this->depenses->add($depense);
+            $depense->setStation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDepense(Depense $depense): static
+    {
+        if ($this->depenses->removeElement($depense)) {
+            // set the owning side to null (unless already changed)
+            if ($depense->getStation() === $this) {
+                $depense->setStation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ClientStation>
+     */
+    public function getClientStations(): Collection
+    {
+        return $this->clientStations;
+    }
+
+    public function addClientStation(ClientStation $clientStation): static
+    {
+        if (!$this->clientStations->contains($clientStation)) {
+            $this->clientStations->add($clientStation);
+            $clientStation->setStation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClientStation(ClientStation $clientStation): static
+    {
+        if ($this->clientStations->removeElement($clientStation)) {
+            // set the owning side to null (unless already changed)
+            if ($clientStation->getStation() === $this) {
+                $clientStation->setStation(null);
             }
         }
 
