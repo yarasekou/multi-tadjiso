@@ -1,6 +1,6 @@
 # Tadjiso
 
-Gestion multi‑stations pour entreprises pétrolières.
+Gestion multi‑stations pour entreprises stations services.
 
 ## Stack
 - Symfony
